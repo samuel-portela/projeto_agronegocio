@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_agro/screens/login_screen.dart';
-
+import 'package:smart_agro/screens/tela_plantacao.dart';
 
 void main() {
   runApp(SmartAgro());
@@ -14,7 +14,11 @@ class SmartAgro extends StatelessWidget {
     return MaterialApp(
       title: 'Agro Smart | Bem vindo(a)!',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LoginScreen(),
+        '/agro': (context) => AgroScreen(),
+      },
     );
   }
 }

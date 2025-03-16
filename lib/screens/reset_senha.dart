@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/custom_button.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ResetSenha extends StatelessWidget {
+  const ResetSenha({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +31,15 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              CustomTextField(label: 'Informe Sua Nova Senha'),
-              const SizedBox(height: 20),
-              CustomTextField(label: 'Confirme a senha', obscureText: true),
-              const SizedBox(height: 10)
-                ),
+              CustomTextField(
+                label: 'Informe Sua Nova Senha',
+                obscureText: true,
               ),
               const SizedBox(height: 20),
-              CustomButton(text: 'Resetar ', onPressed: () {}),
+              CustomTextField(label: 'Confirme a Senha', obscureText: true),
+              const SizedBox(height: 10),
+              const SizedBox(height: 20),
+              CustomButton(text: 'Resetar', onPressed: () {}),
             ],
           ),
         ),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/custom_button.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class TelaLocalizacao extends StatelessWidget {
+  const TelaLocalizacao({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:smart_agro/screens/login_screen.dart';
 import 'package:smart_agro/screens/tela_plantacao.dart';
+import 'package:smart_agro/screens/recuperar_senha.dart';
+import 'package:smart_agro/screens/reset_senha.dart';
+import 'package:smart_agro/screens/menu_screen.dart';
+import 'package:smart_agro/screens/tela_localizacao.dart';
+import 'package:smart_agro/screens/criar_conta.dart';
 
 void main() {
-  runApp(SmartAgro());
+  runApp(const SmartAgro());
 }
 
 class SmartAgro extends StatelessWidget {
@@ -12,12 +17,18 @@ class SmartAgro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Agro Smart | Bem vindo(a)!',
+      title: 'Agro Smart | Bem-vindo(a)!',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/', // Define a tela inicial do app
       routes: {
-        '/': (context) => LoginScreen(),
-        '/agro': (context) => AgroScreen(),
+        '/': (context) => const LoginScreen(), // Tela inicial (Login)
+        '/recuperarSenha':
+            (context) => RecuperarSenha(), // Tela de recuperar senha
+        '/resetSenha': (context) => ResetSenha(), //Tela de Reset da senha
+        '/criarConta': (context) => CriarConta(), // Tela criar conta
+        '/menuScreen': (context) => MenuScreen(), //Tela Menu
+        '/plantacao': (context) => AgroScreen(), // Tela de plantação
+        '/telaLocalizacao': (context) => TelaLocalizacao(), //Tela Localização
       },
     );
   }

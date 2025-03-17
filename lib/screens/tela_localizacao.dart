@@ -1,63 +1,120 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_textfield.dart';
-import '../widgets/custom_button.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class TelaLocalizacao extends StatelessWidget {
-  const TelaLocalizacao({Key? key}) : super(key: key);
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LocationScreen(),
+    );
+  }
+}
+
+class LocationScreen extends StatefulWidget {
+  @override
+  _LocationScreenState createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+  bool isLocationEnabled = true;
+  late GoogleMapController mapController;
+  final LatLng _initialPosition = LatLng(-21.984361, -47.111211);
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/logo.jpg', height: 150),
-              const SizedBox(height: 20),
-              const Text(
-                'AgroSmart',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                  shadows: [Shadow(color: Colors.black45, blurRadius: 3)],
+      appBar: AppBar(
+        title: Text('Tela Localização'),
+        backgroundColor: Colors.green,
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Ativar localização',
+                  style: TextStyle(fontSize: 16),
                 ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Login',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              CustomTextField(label: 'Email'),
-              const SizedBox(height: 20),
-              CustomTextField(label: 'Senha', obscureText: true),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Esqueci a senha',
-                    style: TextStyle(color: Colors.green),
-                  ),
+                Switch(
+                  value: isLocationEnabled,
+                  onChanged: (value) {
+                    setState(() {
+                      isLocationEnabled = value;
+                    });
+                  },
                 ),
-              ),
-              const SizedBox(height: 20),
-              CustomButton(text: 'Login', onPressed: () {}),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Não tem conta ? Crie uma',
-                  style: TextStyle(color: Colors.green),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+          Container(
+            height: 200,
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _initialPosition,
+                zoom: 15,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Histórico de localização',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              children: [
+                LocationCard('Rua ABC, Bairro XYZ', '13/03/2025 - 19:45'),
+                LocationCard('Avenida DEF, Centro', '13/03/2025 - 19:46'),
+                LocationCard('Avenida BCA, Bairro QT', '13/03/2025 - 19:47'),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              ),
+              onPressed: () {},
+              child: Text('Limpar Histórico', style: TextStyle(color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LocationCard extends StatelessWidget {
+  final String address;
+  final String date;
+
+  LocationCard(this.address, this.date);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: ListTile(
+        leading: Icon(Icons.location_on, color: Colors.green),
+        title: Text(address),
+        subtitle: Text(date),
       ),
     );
   }

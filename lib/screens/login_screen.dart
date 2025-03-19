@@ -38,7 +38,9 @@ class LoginScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/recuperarSenha');
+                  },
                   child: const Text(
                     'Esqueci a senha',
                     style: TextStyle(color: Colors.green),
@@ -46,10 +48,17 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              CustomButton(text: 'Login', onPressed: () {}),
+              CustomButton(
+                text: 'Login',
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/menuScreen');
+                },
+              ),
               const SizedBox(height: 20),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/criarConta');
+                },
                 child: const Text(
                   'Não tem conta ? Crie uma',
                   style: TextStyle(color: Colors.green),

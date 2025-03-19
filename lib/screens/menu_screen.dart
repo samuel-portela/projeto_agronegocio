@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_agro/widgets/app_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,24 +21,7 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green[700],
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.white),
-          onPressed: () {},
-        ),
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Text(
-                'T',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-      ),
+      appBar: AppBarWidget(text: 'T'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

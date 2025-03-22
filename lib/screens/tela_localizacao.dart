@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:smart_agro/widgets/app_bar.dart';
+import 'package:smart_agro/widgets/menu_hamburguer.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,10 +34,8 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Tela Localização'),
-        backgroundColor: Colors.green,
-      ),
+      appBar: AppBarWidget(text: 'A'),
+      drawer: DrawerWidget(nome: 'Antonio', email: 'joao.silva@exemplo.com'),
       body: Column(
         children: [
           Padding(
@@ -43,10 +43,7 @@ class _LocationScreenState extends State<LocationScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Ativar localização',
-                  style: TextStyle(fontSize: 16),
-                ),
+                Text('Ativar localização', style: TextStyle(fontSize: 16)),
                 Switch(
                   value: isLocationEnabled,
                   onChanged: (value) {
@@ -92,7 +89,10 @@ class _LocationScreenState extends State<LocationScreen> {
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               ),
               onPressed: () {},
-              child: Text('Limpar Histórico', style: TextStyle(color: Colors.white)),
+              child: Text(
+                'Limpar Histórico',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],

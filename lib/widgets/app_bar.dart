@@ -11,14 +11,17 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.green[700],
       leading: IconButton(
         icon: Icon(Icons.menu, color: Colors.white),
-        onPressed: () {},
+        onPressed: () {
+          Scaffold.maybeOf(context)?.openDrawer();
+        },
       ),
       title: Row(
         children: [
           CircleAvatar(
             backgroundColor: Colors.white,
-            child: Text('T', style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(text, style: TextStyle(fontWeight: FontWeight.bold)),
           ),
+          SizedBox(width: 10),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_agro/widgets/custom_buttom_criar_conta.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/custom_button.dart';
 
@@ -57,22 +58,14 @@ class _CriarContaState extends State<CriarConta> {
                 },
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
+              CustomButtonCriarConta(
+                text: 'Recuperar Conta',
                 onPressed:
                     _isChecked
                         ? () {
-                          // Ação quando os termos forem aceitos
-                          print('Termos aceitos!');
+                          print('Termos aceitos! Recuperação de conta');
                         }
-                        : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      _isChecked
-                          ? Colors.green
-                          : Colors.grey, // Cor de fundo do botão
-                  foregroundColor: Colors.white, // Cor do texto
-                ),
-                child: const Text('Continuar'),
+                        : null, 
               ),
             ],
           ),

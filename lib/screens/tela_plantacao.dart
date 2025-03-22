@@ -1,45 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:smart_agro/widgets/app_bar.dart';
+import 'package:smart_agro/widgets/custom_textfield_com_icone.dart';
+import 'package:smart_agro/widgets/informacoes_tempo.dart';
+import 'package:smart_agro/widgets/menu_hamburguer.dart';
 
 class AgroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.white),
-          onPressed: () {},
-        ),
-        title: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Text(
-            'T',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ),
-      ),
+      appBar: AppBarWidget(text: 'A'),
+      drawer: DrawerWidget(nome: 'Antonio', email: 'joao.silva@exemplo.com'),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.wb_sunny, size: 80, color: Colors.orange),
-            Text(
-              'Ensolarado',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              '26°C',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text('Máxima: 28°C  Mínima: 18°C'),
-            Text('Sensação térmica: 24°C'),
-            SizedBox(height: 10),
-            Text(
-              'São João da Boa Vista - SP',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            InformacoesTempo(),
             SizedBox(height: 20),
             Container(
               padding: EdgeInsets.all(10),
@@ -50,11 +26,10 @@ class AgroScreen extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Plantio Ideal: Tomate ',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  CustomTextWithIcon(
+                    text: 'Plantio Ideal: Tomate',
+                    icon: Icons.emoji_food_beverage,
                   ),
-                  Icon(Icons.emoji_food_beverage, color: Colors.white),
                 ],
               ),
             ),
@@ -74,22 +49,34 @@ class AgroScreen extends StatelessWidget {
                       SizedBox(width: 5),
                       Text(
                         'Informações:',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(height: 10),
                   Text(
                     'Agrotóxicos ideais:',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                   Text('• Benalaxyl', style: TextStyle(color: Colors.white)),
-                  Text('• Chlorothalonil', style: TextStyle(color: Colors.white)),
+                  Text(
+                    '• Chlorothalonil',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   Text('• Methomyl', style: TextStyle(color: Colors.white)),
                   SizedBox(height: 10),
                   Text(
                     'Previsão de Colheita: 90 Dias',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),

@@ -7,8 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:smart_agro/main.dart';
+import 'package:smart_agro/smart_agro.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

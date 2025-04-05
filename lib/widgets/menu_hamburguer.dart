@@ -31,19 +31,17 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Configurações'),
-            onTap: () {
-              Navigator.pop(context);
-              // Navegação para Configurações
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.account_circle),
             title: Text('Perfil'),
             onTap: () {
               Navigator.pop(context);
-              // Navegação para Perfil
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Configurações'),
+            onTap: () {
+              Navigator.pop(context);
             },
           ),
           ListTile(
@@ -51,7 +49,6 @@ class DrawerWidget extends StatelessWidget {
             title: Text('Sair'),
             onTap: () {
               Navigator.pop(context);
-              // Implementar logout aqui se necessário
             },
           ),
         ],

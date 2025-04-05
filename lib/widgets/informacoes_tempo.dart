@@ -6,27 +6,25 @@ class InformacoesTempo extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 20),
+        SizedBox(height: 0),
         Image.asset(
-          'assets/images/ensolarado.gif',
-          width: 80,
-          height: 80,
-          fit: BoxFit.cover,
+          'assets/images/ensolarado2.gif',
+          width: 150,
+          height: 150,
+          fit: BoxFit.contain,
         ),
-        SizedBox(height: 1),
         Text(
           'Ensolarado',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
         ),
         Text(
-          '26°C',
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+          '26 °C',
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 1),
         Text(
-          'Segunda-feira,\n10 de Fevereiro',
+          'Segunda-feira,\n10 de Fevereiro de 2025',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
       ],
     );

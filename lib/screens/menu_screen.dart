@@ -21,8 +21,8 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(text: 'A'),
-      drawer: DrawerWidget(nome: 'Antonio', email: 'joao.silva@exemplo.com'),
+      appBar: AppBarWidget(text: 'T'),
+      drawer: DrawerWidget(nome: 'Trikas', email: 'trikas@exemplo.com'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

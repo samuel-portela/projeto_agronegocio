@@ -7,7 +7,13 @@ class InformacoesTempo extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: 20),
-        Icon(Icons.wb_sunny, size: 50, color: Colors.orange),
+        Image.asset(
+          'assets/images/ensolarado.gif',
+          width: 80,
+          height: 80,
+          fit: BoxFit.cover,
+        ),
+        SizedBox(height: 1),
         Text(
           'Ensolarado',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
@@ -16,7 +22,7 @@ class InformacoesTempo extends StatelessWidget {
           '26°C',
           style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 1),
         Text(
           'Segunda-feira,\n10 de Fevereiro',
           textAlign: TextAlign.center,

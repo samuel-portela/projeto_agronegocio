@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_agro/screens/menu_screen.dart';
 
 class DrawerWidget extends StatelessWidget {
   final String nome;
@@ -31,10 +32,10 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text('Perfil'),
+            leading: Icon(Icons.home),
+            title: Text('Ínicio'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.of(context).pushNamed('/menuScreen');
             },
           ),
           ListTile(
@@ -48,7 +49,31 @@ class DrawerWidget extends StatelessWidget {
             leading: Icon(Icons.logout),
             title: Text('Sair'),
             onTap: () {
-              Navigator.pop(context);
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Confirmar saída'),
+                    content: Text('Tem certeza que deseja sair? Será necessário efetuar o login novamente.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Cancelar'),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Fecha o dialog
+                        },
+                      ),
+                      TextButton(
+                        child: Text('Sair'),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Fecha o dialog
+                          Navigator.of(context).pop(); // Fecha o Drawer
+                          Navigator.pushNamed(context,'/');
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
             },
           ),
         ],

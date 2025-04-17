@@ -7,7 +7,7 @@ class ClimaController {
   final String _apiKey = 'ab098a13f7061244602775ca9d99feff';
   final String _baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
-  Future<ClimaModel> buscarClimaAtual({String cidade = 'São Paulo'}) async {
+  Future<ClimaModel> buscarClimaAtual({String cidade = 'Curitiba'}) async {
     final uri = Uri.parse('$_baseUrl?q=$cidade&appid=$_apiKey&units=metric&lang=pt_br');
 
     final response = await http.get(uri);

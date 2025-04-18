@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_agro/screens/login_screen.dart';
 import 'package:smart_agro/screens/nova_senha.dart';
+import 'package:smart_agro/screens/precossacas_screen.dart';
 import 'package:smart_agro/screens/recuperar_conta.dart';
 import 'package:smart_agro/screens/tela_plantacao.dart';
 import 'package:smart_agro/screens/reset_senha.dart';
@@ -23,6 +24,7 @@ class SmartAgro extends StatelessWidget {
         '/resetSenha': (context) => ResetSenha(), //Tela de Reset da senha
         '/criarConta': (context) => CriarConta(), // Tela criar conta
         '/menuScreen': (context) => MenuScreen(), //Tela Menu
+        '/precosacaScreen': (context) => PrecosSacasScreen(),
         '/plantacao': (context) => AgroScreen(), // Tela de plantação
         '/telaLocalizacao': (context) => LocationScreen(), //Tela Localização.
         '/enviar-nova-senha': (context) => NovaSenhaPage(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:smart_agro/controllers/precossacas_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
@@ -23,7 +24,7 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
 
   void carregarInformacoes() async {
     final plantio = await controller.consultarPrecoSaca(
-      'Me diga em diretamente em tópicos as cotações dos preços das sacas de milho, café, soja, arroz, feijão, cana de açuçar, sendo direto e objetivo. Apenas falando os preços pela região do brasil. Sem colocar textos avulsos.',
+      'Me diga diretamente em tópicos as cotações dos preços das sacas de milho, café, soja, arroz, feijão, cana de açuçar, sendo direto e objetivo. Apenas falando os preços pela região do brasil. Sem colocar textos avulsos. Me forneça a cotação em dólar e real.',
     );
 
     setState(() {
@@ -39,7 +40,6 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          // Adicionando o SingleChildScrollView
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,8 +48,17 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              Center(
-                child: Text(precoSacas, style: const TextStyle(fontSize: 16)),
+              MarkdownBody(
+                data: precoSacas,
+                styleSheet: MarkdownStyleSheet(
+                  p: const TextStyle(fontSize: 16),
+                  h2: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  strong: const TextStyle(fontWeight: FontWeight.bold),
+                  listBullet: const TextStyle(fontSize: 16),
+                ),
               ),
             ],
           ),

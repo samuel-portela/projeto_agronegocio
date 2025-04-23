@@ -19,7 +19,7 @@ class SmartAgro extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/', // Define a tela inicial do app
       routes: {
-        '/': (context) => LoginScreen(), // Tela inicial (Login)
+        '/': (context) => MenuScreen(), // Tela inicial (Login)
         '/recuperarSenha': (context) => RecuperarConta(), // Tela de recuperar senha
         '/resetSenha': (context) => ResetSenha(), //Tela de Reset da senha
         '/criarConta': (context) => CriarConta(), // Tela criar conta

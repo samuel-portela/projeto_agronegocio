@@ -59,16 +59,9 @@ class MenuScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               CustomButton(
-                text: 'Possíveis previsões de Safra',
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/menuScreen');
-                },
-              ),
-              SizedBox(height: 20),
-              CustomButton(
                 text: 'Preços das sacas',
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/menuScreen');
+                  Navigator.of(context).pushNamed('/precosacaScreen');
                 },
               ),
             ],

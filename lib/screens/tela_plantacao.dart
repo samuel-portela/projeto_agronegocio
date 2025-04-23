@@ -1,10 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:smart_agro/controllers/plantacao_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/custom_textfield_com_icone.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
 
-class AgroScreen extends StatelessWidget {
+class AgroScreen extends StatefulWidget {
+  @override
+  _AgroScreenState createState() => _AgroScreenState();
+}
+
+class _AgroScreenState extends State<AgroScreen> {
+  final controller = PlantacaoController();
+
+  String plantioIdeal = 'Carregando...';
+  String descricaoAgrotoxicos = 'Carregando...';
+  String dicasCultivo = 'Carregando...';
+  String alertaClimatico = 'Carregando...';
+  String alertaTemperatura = 'Carrregando...';
+
+  @override
+  void initState() {
+    super.initState();
+    carregarInformacoes();
+  }
+
+  void carregarInformacoes() async {
+    final plantio = await controller.gerarConteudoGemini(
+      'Resuma em tópicos. Qual o plantio ideal para Curitiba no mês de abril? Responda de forma direta.',
+    );
+
+    final agrotoxicos = await controller.gerarConteudoGemini(
+      'Quais agrotóxicos são recomendados para esse tipo de plantio em Curitiba em abril? Fale de forma breve.',
+    );
+
+    final dicas = await controller.gerarConteudoGemini(
+      'Dicas para cultivar essa plantação em Curitiba no mês de abril. Me diga a previsão de colheita também no final.',
+    );
+
+    final resultadoAlertaClimatico = await controller.gerarConteudoGemini(
+      'Hipoteticamente Consulte a previsão do tempo atual para a cidade de Curitiba, considerando o dia de hoje. Com base nas informações meteorológicas, diga se há ou não algum alerta climático ativo, como chuvas intensas, geadas, ventos fortes, calor extremo ou qualquer outro fenômeno relevante. Seja direto e objetivo na resposta.',
+    );
+
+    final alerta = await controller.buscarAlertaClimatico();
+
+    setState(() {
+      plantioIdeal = plantio ?? 'Erro ao buscar informação.';
+      descricaoAgrotoxicos = agrotoxicos ?? 'Erro ao buscar informação.';
+      dicasCultivo = dicas ?? 'Erro ao buscar informação.';
+      alertaClimatico = resultadoAlertaClimatico ?? 'Erro ao buscar informação.';
+      alertaTemperatura = alerta ?? 'Erro ao buscar informação.';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,95 +60,106 @@ class AgroScreen extends StatelessWidget {
       drawer: DrawerWidget(nome: 'Antonio', email: 'joao.silva@exemplo.com'),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            InformacoesTempo(),
-            SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomTextWithIcon(
-                    text: 'Plantio Ideal: Tomate',
-                    icon: Icons.emoji_food_beverage,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.green.shade300,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.info, color: Colors.white),
-                      SizedBox(width: 5),
-                      Text(
-                        'Informações:',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InformacoesTempo(),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.emoji_food_beverage, color: Colors.white),
+                    SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'Plantio Ideal: $plantioIdeal',
+                        style: TextStyle(color: Colors.white),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Agrotóxicos ideais:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
                     ),
-                  ),
-                  Text('• Benalaxyl', style: TextStyle(color: Colors.white)),
-                  Text(
-                    '• Chlorothalonil',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text('• Methomyl', style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 10),
-                  Text(
-                    'Previsão de Colheita: 90 Dias',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade300,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.info, color: Colors.white),
+                        SizedBox(width: 5),
+                        Text(
+                          'Informações:',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    SizedBox(height: 10),
+                    Text(
+                      'Agrotóxicos recomendados:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      descricaoAgrotoxicos,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Dicas de Cultivo:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(dicasCultivo, style: TextStyle(color: Colors.white)),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.yellow.shade700,
-                borderRadius: BorderRadius.circular(10),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.yellow.shade700,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.warning, color: Colors.white),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text(
+                        alertaTemperatura,
+                        style: TextStyle(color: Colors.white),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.warning, color: Colors.white),
-                  SizedBox(width: 5),
-                  Text(
-                    'Nenhum alerta climático reportado',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

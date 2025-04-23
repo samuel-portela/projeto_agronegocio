@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:smart_agro/controllers/plantacao_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/custom_textfield_com_icone.dart';
@@ -53,11 +54,30 @@ class _AgroScreenState extends State<AgroScreen> {
     });
   }
 
+  bool temMarkdown(String texto) {
+    return texto.contains('*') || texto.contains('- ') || texto.contains('#') || texto.contains('\n');
+  }
+
+  Widget renderTexto(String texto, BuildContext context) {
+    return temMarkdown(texto)
+        ? MarkdownBody(
+            data: texto,
+            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+              p: TextStyle(color: Colors.white),
+            ),
+          )
+        : Text(
+            texto,
+            style: TextStyle(color: Colors.white),
+            softWrap: true,
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(text: 'A'),
-      drawer: DrawerWidget(nome: 'Antonio', email: 'joao.silva@exemplo.com'),
+      appBar: AppBarWidget(text: 'T'),
+      drawer: DrawerWidget(nome: 'Trikas', email: 'trikas@exemplo.com'),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -72,19 +92,24 @@ class _AgroScreenState extends State<AgroScreen> {
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Row(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.emoji_food_beverage, color: Colors.white),
-                    SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        'Plantio Ideal: $plantioIdeal',
-                        style: TextStyle(color: Colors.white),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                      ),
+                    Row(
+                      children: [
+                        Icon(Icons.agriculture, color: Colors.white),
+                        SizedBox(width: 8),
+                        Text(
+                          'Plantio Ideal:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 8),
+                    renderTexto(plantioIdeal, context),
                   ],
                 ),
               ),
@@ -92,7 +117,7 @@ class _AgroScreenState extends State<AgroScreen> {
               Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.green.shade300,
+                  color: Colors.green,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -119,10 +144,7 @@ class _AgroScreenState extends State<AgroScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    Text(
-                      descricaoAgrotoxicos,
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    renderTexto(descricaoAgrotoxicos, context),
                     SizedBox(height: 10),
                     Text(
                       'Dicas de Cultivo:',
@@ -131,7 +153,7 @@ class _AgroScreenState extends State<AgroScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    Text(dicasCultivo, style: TextStyle(color: Colors.white)),
+                    renderTexto(dicasCultivo, context),
                   ],
                 ),
               ),
@@ -142,19 +164,24 @@ class _AgroScreenState extends State<AgroScreen> {
                   color: Colors.yellow.shade700,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Row(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.warning, color: Colors.white),
-                    SizedBox(width: 5),
-                    Flexible(
-                      child: Text(
-                        alertaTemperatura,
-                        style: TextStyle(color: Colors.white),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                      ),
+                    Row(
+                      children: [
+                        Icon(Icons.warning, color: Colors.white),
+                        SizedBox(width: 5),
+                        Text(
+                          'Alerta Climático:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 8),
+                    renderTexto(alertaTemperatura, context),
                   ],
                 ),
               ),

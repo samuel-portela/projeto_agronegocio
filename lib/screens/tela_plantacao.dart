@@ -58,19 +58,19 @@ class _AgroScreenState extends State<AgroScreen> {
     return texto.contains('*') || texto.contains('- ') || texto.contains('#') || texto.contains('\n');
   }
 
-  Widget renderTexto(String texto, BuildContext context) {
-    return temMarkdown(texto)
-        ? MarkdownBody(
-            data: texto,
-            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-              p: TextStyle(color: Colors.white),
-            ),
-          )
-        : Text(
-            texto,
-            style: TextStyle(color: Colors.white),
-            softWrap: true,
-          );
+ Widget renderTexto(String texto, BuildContext context) {
+  return temMarkdown(texto)
+      ? MarkdownBody(
+          data: texto,
+          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+            p: const TextStyle(color: Colors.white),
+            listBullet: const TextStyle(color: Colors.white),
+          ),
+        )
+      : Text(
+          texto,
+          style: const TextStyle(color: Colors.white),
+        );
   }
 
   @override

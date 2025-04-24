@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
+  final TextStyle? textStyle;
 
-  const CustomButton({required this.text, required this.onPressed, Key? key})
-    : super(key: key);
+  const CustomButton({
+    required this.text,
+    required this.onPressed,
+    this.textStyle,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,12 @@ class CustomButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           text,
-          style: const TextStyle(fontSize: 18, color: Colors.white),
+          style: textStyle ??
+              const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+              ),
         ),
       ),
     );

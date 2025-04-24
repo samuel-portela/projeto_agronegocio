@@ -16,10 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MenuScreen(),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: MenuScreen());
   }
 }
 
@@ -35,6 +32,7 @@ class MenuScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(height: 80),
               InformacoesTempo(),
               SizedBox(height: 20),
               CustomButton(

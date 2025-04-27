@@ -17,7 +17,7 @@ class _InformacoesTempoState extends State<InformacoesTempo> {
   @override
   void initState() {
     super.initState();
-    _climaFuturo = ClimaController().buscarClimaAtual(cidade: 'Moscow');
+    _climaFuturo = ClimaController().buscarClimaAtual(cidade: 'São Paulo');
   }
 
   String _formatarDataAtual() {

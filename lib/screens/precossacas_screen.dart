@@ -13,7 +13,6 @@ class PrecosSacasScreen extends StatefulWidget {
 
 class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
   final controller = PrecossacasController();
-
   String precoSacas = 'Carregando...';
 
   @override
@@ -32,6 +31,25 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
     });
   }
 
+  bool temMarkdown(String texto) {
+    return texto.contains('*') || texto.contains('- ') || texto.contains('#') || texto.contains('\n');
+  }
+
+  Widget renderTexto(String texto, BuildContext context) {
+    return temMarkdown(texto)
+        ? MarkdownBody(
+            data: texto,
+            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+              p: const TextStyle(color: Colors.white),
+              listBullet: const TextStyle(color: Colors.white), // bullets brancos
+            ),
+          )
+        : Text(
+            texto,
+            style: const TextStyle(color: Colors.white),
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,23 +59,33 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Cotações atuais:',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              MarkdownBody(
-                data: precoSacas,
-                styleSheet: MarkdownStyleSheet(
-                  p: const TextStyle(fontSize: 16),
-                  h2: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  strong: const TextStyle(fontWeight: FontWeight.bold),
-                  listBullet: const TextStyle(fontSize: 16),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: const [
+                        Icon(Icons.attach_money, color: Colors.white),
+                        SizedBox(width: 8),
+                        Text(
+                          'Cotações de Sacas:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    renderTexto(precoSacas, context),
+                  ],
                 ),
               ),
             ],

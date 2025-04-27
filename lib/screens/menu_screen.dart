@@ -64,6 +64,13 @@ class MenuScreen extends StatelessWidget {
                   Navigator.of(context).pushNamed('/precosacaScreen');
                 },
               ),
+              SizedBox(height: 20),
+              CustomButton(
+                text: 'Previsão dos próximos 5 dias',
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/previsao-tempo');
+                },
+              ),
             ],
           ),
         ),

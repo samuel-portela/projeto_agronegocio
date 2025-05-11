@@ -29,10 +29,10 @@ class CriarContaController {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        jsonDecode(response.body);
         return true;
       } else {
-        final error = jsonDecode(response.body);
+        jsonDecode(response.body);
         return false;
       }
     } catch (e) {

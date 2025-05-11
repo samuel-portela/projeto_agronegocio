@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/custom_button.dart';
@@ -39,13 +38,6 @@ class MenuScreen extends StatelessWidget {
                 text: 'Informações Plantio',
                 onPressed: () {
                   Navigator.of(context).pushNamed('/plantacao');
-                },
-              ),
-              SizedBox(height: 20),
-              CustomButton(
-                text: 'Dados Atuais',
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/menuScreen');
                 },
               ),
               SizedBox(height: 20),

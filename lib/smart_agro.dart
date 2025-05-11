@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_agro/screens/configuracoes_screen.dart';
 import 'package:smart_agro/screens/login_screen.dart';
 import 'package:smart_agro/screens/nova_senha.dart';
 import 'package:smart_agro/screens/precossacas_screen.dart';
@@ -21,7 +22,7 @@ class SmartAgro extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/', // Define a tela inicial do app
       routes: {
-        '/': (context) => TelaPrevisao(), // Tela inicial (Login) 
+        '/': (context) => LoginScreen(), // Tela inicial (Login) 
         '/recuperarSenha':
             (context) => RecuperarConta(), // Tela de recuperar senha
         '/resetSenha': (context) => ResetSenha(), //Tela de Reset da senha
@@ -32,6 +33,7 @@ class SmartAgro extends StatelessWidget {
         '/telaLocalizacao': (context) => LocationScreen(), //Tela Localização.
         '/enviar-nova-senha': (context) => NovaSenhaPage(),
         '/previsao-tempo': (context) => TelaPrevisao(),
+        '/configuracoes' : (context) => ConfiguracoesScreen(),
       },
     );
   }

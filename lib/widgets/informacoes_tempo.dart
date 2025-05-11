@@ -3,7 +3,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_agro/models/clima_model.dart';
 import 'package:smart_agro/controllers/clima_controller.dart';
-import 'package:weather_icons/weather_icons.dart';
 import 'package:smart_agro/utils/icon_map.dart';
 
 class InformacoesTempo extends StatefulWidget {

@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:smart_agro/controllers/previsao_controller.dart';
 import 'package:smart_agro/models/previsao_dia.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
-import 'package:smart_agro/widgets/custom_button.dart';
-import 'package:smart_agro/widgets/informacoes_tempo.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
 
 

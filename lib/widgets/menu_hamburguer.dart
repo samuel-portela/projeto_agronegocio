@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_agro/screens/menu_screen.dart';
 
 class DrawerWidget extends StatelessWidget {
   final String nome;
@@ -42,7 +41,7 @@ class DrawerWidget extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Configurações'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.of(context).pushNamed('/configuracoes');
             },
           ),
           ListTile(

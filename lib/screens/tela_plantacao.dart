@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:smart_agro/controllers/plantacao_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
-import 'package:smart_agro/widgets/custom_textfield_com_icone.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
 
@@ -50,7 +49,7 @@ class _AgroScreenState extends State<AgroScreen> {
       descricaoAgrotoxicos = agrotoxicos ?? 'Erro ao buscar informação.';
       dicasCultivo = dicas ?? 'Erro ao buscar informação.';
       alertaClimatico = resultadoAlertaClimatico ?? 'Erro ao buscar informação.';
-      alertaTemperatura = alerta ?? 'Erro ao buscar informação.';
+      alertaTemperatura = alerta;
     });
   }
 

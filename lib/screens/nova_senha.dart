@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../widgets/custom_button.dart';
 
 class NovaSenhaPage extends StatefulWidget {
   const NovaSenhaPage({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
   final _emailController = TextEditingController();
   final _tokenController = TextEditingController();
   final _senhaController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -25,6 +27,8 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
 
   Future<void> _enviarNovaSenha() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+
       final body = {
         'email': _emailController.text.trim(),
         'token': _tokenController.text.trim(),
@@ -42,39 +46,60 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
 
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(data['message'] ?? 'Senha redefinida com sucesso')),
+            SnackBar(
+              content: Text(data['message'] ?? 'Senha redefinida com sucesso'),
+            ),
           );
-
-          // Aguarda 2 segundos e volta para login
           Future.delayed(const Duration(seconds: 2), () {
             Navigator.pushReplacementNamed(context, '/');
           });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(data['message'] ?? 'Erro ao redefinir a senha')),
+            SnackBar(
+              content: Text(data['message'] ?? 'Erro ao redefinir a senha'),
+            ),
           );
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro de conexão: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Erro de conexão: $e')));
       }
+
+      setState(() => _isLoading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Redefinir Senha')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image.asset('assets/images/logo.jpg', height: 150),
+                const SizedBox(height: 20),
                 const Text(
-                  'Informe o token enviado por SMS e crie uma nova senha.',
+                  'AgroSmart',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                    shadows: [Shadow(color: Colors.black45, blurRadius: 3)],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Redefinir Senha',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Informe seu e-mail, token enviado por SMS e a nova senha.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16),
                 ),
@@ -85,8 +110,11 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
                     labelText: 'E-mail',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'Informe o e-mail' : null,
+                  validator:
+                      (value) =>
+                          value == null || value.isEmpty
+                              ? 'Informe o e-mail'
+                              : null,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -95,8 +123,11 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
                     labelText: 'Token',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'Informe o token' : null,
+                  validator:
+                      (value) =>
+                          value == null || value.isEmpty
+                              ? 'Informe o token'
+                              : null,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -106,13 +137,26 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
                     labelText: 'Nova senha',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) =>
-                      value == null || value.length < 6 ? 'Senha muito curta' : null,
+                  validator:
+                      (value) =>
+                          value == null || value.length < 6
+                              ? 'Senha muito curta'
+                              : null,
                 ),
                 const SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: _enviarNovaSenha,
-                  child: const Text('Confirmar'),
+                CustomButton(
+                  text: _isLoading ? 'Enviando...' : 'Confirmar',
+                  onPressed: _isLoading ? null : _enviarNovaSenha,
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed('/');
+                  },
+                  child: const Text(
+                    'Voltar ao login',
+                    style: TextStyle(color: Colors.green),
+                  ),
                 ),
               ],
             ),

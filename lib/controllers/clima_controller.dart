@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smart_agro/models/clima_model.dart';
-import '../models/clima_model.dart';
 
 class ClimaController {
   final String _apiKey = 'ab098a13f7061244602775ca9d99feff';

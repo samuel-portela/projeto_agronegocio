@@ -28,7 +28,7 @@ class RecuperarContaController {
         body: jsonEncode(body),
       );
 
-      final data = jsonDecode(response.body);
+      jsonDecode(response.body);
       if (response.statusCode == 200) {
         return true;
       } else {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_agro/route_observer/rota_observer.dart';
 import 'package:smart_agro/screens/configuracoes_screen.dart';
 import 'package:smart_agro/screens/login_screen.dart';
 import 'package:smart_agro/screens/nova_senha.dart';
@@ -18,6 +19,7 @@ class SmartAgro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [rotaObserver],
       title: 'Agro Smart | Bem-vindo(a)!',
       debugShowCheckedModeBanner: false,
       initialRoute: '/', // Define a tela inicial do app

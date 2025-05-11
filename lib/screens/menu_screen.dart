@@ -1,68 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:smart_agro/route_observer/rota_observer.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/custom_button.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
 
-void main() {
-  Intl.defaultLocale = 'pt_BR';
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MenuScreen extends StatefulWidget {
+  const MenuScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: MenuScreen());
-  }
+  State<MenuScreen> createState() => _MenuScreenState();
 }
 
-class MenuScreen extends StatelessWidget {
+class _MenuScreenState extends State<MenuScreen> with RouteAware {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    rotaObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    rotaObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    debugPrint('🟢 Entrou na MenuScreen');
+  }
+
+  @override
+  void didPop() {
+    debugPrint('🔴 Saiu da MenuScreen');
+  }
+
+  @override
+  void didPushNext() {
+    debugPrint('➡️ Foi para outra tela a partir da MenuScreen');
+  }
+
+  @override
+  void didPopNext() {
+    debugPrint('⬅️ Voltou para a MenuScreen');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(text: 'T'),
       drawer: DrawerWidget(nome: 'Trikas', email: 'trikas@exemplo.com'),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(height: 80),
-              InformacoesTempo(),
-              SizedBox(height: 20),
-              CustomButton(
-                text: 'Informações Plantio',
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/plantacao');
-                },
-              ),
-              SizedBox(height: 20),
-              CustomButton(
-                text: 'Localização e mapas',
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/telaLocalizacao');
-                },
-              ),
-              SizedBox(height: 20),
-              CustomButton(
-                text: 'Preços das sacas',
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/precosacaScreen');
-                },
-              ),
-              SizedBox(height: 20),
-              CustomButton(
-                text: 'Previsão dos próximos 5 dias',
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/previsao-tempo');
-                },
-              ),
-            ],
-          ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 80),
+            InformacoesTempo(),
+            const SizedBox(height: 20),
+            CustomButton(
+              text: 'Informações Plantio',
+              onPressed: () {
+                Navigator.of(context).pushNamed('/plantacao');
+              },
+            ),
+            const SizedBox(height: 20),
+            CustomButton(
+              text: 'Localização e mapas',
+              onPressed: () {
+                Navigator.of(context).pushNamed('/telaLocalizacao');
+              },
+            ),
+            const SizedBox(height: 20),
+            CustomButton(
+              text: 'Preços das sacas',
+              onPressed: () {
+                Navigator.of(context).pushNamed('/precosacaScreen');
+              },
+            ),
+            const SizedBox(height: 20),
+            CustomButton(
+              text: 'Previsão dos próximos 5 dias',
+              onPressed: () {
+                Navigator.of(context).pushNamed('/previsao-tempo');
+              },
+            ),
+          ],
         ),
       ),
     );

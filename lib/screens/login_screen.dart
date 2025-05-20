@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../controllers/login_controller.dart';
 import '../models/user_login.dart';
 import '../widgets/custom_button.dart';
@@ -16,6 +20,48 @@ class _LoginScreenState extends State<LoginScreen> {
   final _senhaController = TextEditingController();
   final _loginController = LoginController();
   bool _isLoading = false;
+
+  static const String _cidadeKey = 'cidade';
+
+  @override
+  void initState() {
+    super.initState();
+    _obterCidade();
+  }
+
+  Future<void> _obterCidade() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return;
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        return;
+      }
+    }
+
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        String cidade = placemarks.first.locality ?? '';
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(_cidadeKey, cidade);
+        print('Cidade salva: $cidade');
+      }
+    } catch (e) {
+      print('Erro ao obter cidade: $e');
+    }
+  }
 
   void _handleLogin() async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -102,7 +148,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                 ),
-
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _senhaController,

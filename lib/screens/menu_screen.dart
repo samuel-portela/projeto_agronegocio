@@ -60,6 +60,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Informações Plantio',
+              icon: Icons.agriculture, // 🌾
               onPressed: () {
                 Navigator.of(context).pushNamed('/plantacao');
               },
@@ -67,6 +68,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Localização e mapas',
+              icon: Icons.map, // 🗺️
               onPressed: () {
                 Navigator.of(context).pushNamed('/telaLocalizacao');
               },
@@ -74,6 +76,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Preços das sacas',
+              icon: Icons.attach_money, // 💰
               onPressed: () {
                 Navigator.of(context).pushNamed('/precosacaScreen');
               },
@@ -81,6 +84,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Previsão dos próximos 5 dias',
+              icon: Icons.wb_sunny, // ☀️
               onPressed: () {
                 Navigator.of(context).pushNamed('/previsao-tempo');
               },

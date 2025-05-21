@@ -37,7 +37,7 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://localhost:4040/enviar-nova-senha'),
+          Uri.parse('http://52.91.106.224:4040/enviar-nova-senha'),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(body),
         );

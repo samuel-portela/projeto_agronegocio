@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_agro/route_observer/rota_observer.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/custom_button.dart';
@@ -13,6 +14,25 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> with RouteAware {
+  String _email = '';
+  String _primeiraLetra = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarEmail();
+  }
+
+  Future<void> _carregarEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    final emailSalvo = prefs.getString('email') ?? '';
+
+    setState(() {
+      _email = emailSalvo;
+      _primeiraLetra = emailSalvo.isNotEmpty ? emailSalvo[0].toUpperCase() : '';
+    });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -48,8 +68,8 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(text: 'T'),
-      drawer: DrawerWidget(nome: 'Trikas', email: 'trikas@exemplo.com'),
+      appBar: AppBarWidget(text: _primeiraLetra),
+      drawer: DrawerWidget(nome:  _email, email: ''),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -60,7 +80,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Informações Plantio',
-              icon: Icons.agriculture, // 🌾
+              icon: Icons.agriculture,
               onPressed: () {
                 Navigator.of(context).pushNamed('/plantacao');
               },
@@ -68,7 +88,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Localização e mapas',
-              icon: Icons.map, // 🗺️
+              icon: Icons.map,
               onPressed: () {
                 Navigator.of(context).pushNamed('/telaLocalizacao');
               },
@@ -76,7 +96,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Preços das sacas',
-              icon: Icons.attach_money, // 💰
+              icon: Icons.attach_money,
               onPressed: () {
                 Navigator.of(context).pushNamed('/precosacaScreen');
               },
@@ -84,7 +104,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Previsão dos próximos 5 dias',
-              icon: Icons.wb_sunny, // ☀️
+              icon: Icons.wb_sunny,
               onPressed: () {
                 Navigator.of(context).pushNamed('/previsao-tempo');
               },

@@ -72,6 +72,9 @@ class _LoginScreenState extends State<LoginScreen> {
         senha: _senhaController.text.trim(),
       );
 
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', _emailController.text.trim());
+
       final success = await _loginController.login(user);
 
       setState(() => _isLoading = false);

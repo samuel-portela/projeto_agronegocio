@@ -87,14 +87,6 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             ),
             const SizedBox(height: 20),
             CustomButton(
-              text: 'Localização e mapas',
-              icon: Icons.map,
-              onPressed: () {
-                Navigator.of(context).pushNamed('/telaLocalizacao');
-              },
-            ),
-            const SizedBox(height: 20),
-            CustomButton(
               text: 'Preços das sacas',
               icon: Icons.attach_money,
               onPressed: () {

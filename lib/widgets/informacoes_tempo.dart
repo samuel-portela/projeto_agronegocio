@@ -25,7 +25,7 @@ class _InformacoesTempoState extends State<InformacoesTempo> {
 
   Future<void> _carregarClima() async {
     final prefs = await SharedPreferences.getInstance();
-    _cidadeAtual = prefs.getString(_cidadeKey) ?? 'São Paulo';
+    _cidadeAtual = prefs.getString(_cidadeKey) ?? 'Moscow';
 
     print('🔍 Buscando clima para cidade: $_cidadeAtual');
 
@@ -65,17 +65,19 @@ class _InformacoesTempoState extends State<InformacoesTempo> {
         }
 
         final clima = snapshot.data!;
-        final icone = obterIcone(clima.icone);
-        final cor = obterCor(clima.icone);
+        final screenWidth = MediaQuery.of(context).size.width;
+        final icone = obterIcone(
+          clima.icone,
+          size: screenWidth * 0.4,
+        );
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icone, size: 100, color: cor),
-            const SizedBox(height: 15),
+            icone,
             Text(
               clima.descricao[0].toUpperCase() + clima.descricao.substring(1),
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 2),
             Text(
@@ -93,6 +95,7 @@ class _InformacoesTempoState extends State<InformacoesTempo> {
               'Umidade: ${clima.umidade.toStringAsFixed(0)}%',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
+            const SizedBox(height: 5),
             Text(
               'Cidade: ${clima.cidade}',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),

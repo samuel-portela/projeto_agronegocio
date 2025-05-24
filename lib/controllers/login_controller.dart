@@ -5,7 +5,7 @@ import '../models/user_login.dart';
 
 class LoginController {
   Future<bool> login(UserLogin user) async {
-    final url = Uri.parse('http://52.91.106.224:4040/login');
+    final url = Uri.parse('http://34.207.162.31:4040/login');
 
     try {
       final response = await http.post(

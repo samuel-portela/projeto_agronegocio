@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:smart_agro/controllers/login_controller.dart';
+import 'package:smart_agro/models/user_login.dart';
 import '../controllers/criar_conta_controller.dart';
 import '../models/user_model.dart';
 import '../widgets/custom_buttom_criar_conta.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CriarConta extends StatefulWidget {
   const CriarConta({Key? key}) : super(key: key);
@@ -20,17 +23,13 @@ class _CriarContaState extends State<CriarConta> {
     super.dispose();
   }
 
+  final telefoneMask = MaskTextInputFormatter(
+    mask: '+## (##) #####-####',
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
   Future<void> _submitForm() async {
     if (controller.formKey.currentState!.validate()) {
-      if (!_isChecked) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Você precisa aceitar os Termos de Uso'),
-          ),
-        );
-        return;
-      }
-
       final user = UserModel(
         nome: controller.nomeController.text,
         email: controller.emailController.text,
@@ -40,17 +39,34 @@ class _CriarContaState extends State<CriarConta> {
 
       final resultado = await controller.enviarDados(user);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              resultado!
-                  ? Text('Sucesso ao cadastrar!')
-                  : Text('Sucesso ao cadastrar!'),
-        ),
-      );
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushReplacementNamed(context, '/');
-      });
+      if (resultado == true) {
+        // Faz login automático após o cadastro
+        final loginSuccess = await LoginController().login(
+          UserLogin(email: user.email, senha: user.senha),
+        );
+
+        if (loginSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Cadastro e login realizados com sucesso!'),
+            ),
+          );
+
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.pushReplacementNamed(context, '/preencher-formulario');
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Cadastro feito, mas erro ao fazer login.'),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erro ao cadastrar usuário.')),
+        );
+      }
     }
   }
 
@@ -159,19 +175,21 @@ class _CriarContaState extends State<CriarConta> {
                               ? 'Digite seu telefone'
                               : null,
                   keyboardType: TextInputType.phone,
+                  inputFormatters: [telefoneMask],
                 ),
+
                 const SizedBox(height: 20),
 
                 // Termos de Uso
-                CheckboxListTile(
-                  title: const Text('Aceito os Termos de Uso'),
-                  value: _isChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _isChecked = value ?? false;
-                    });
-                  },
-                ),
+                // CheckboxListTile(
+                //   title: const Text('Aceito os Termos de Uso'),
+                //   value: _isChecked,
+                //   onChanged: (bool? value) {
+                //     setState(() {
+                //       _isChecked = value ?? false;
+                //     });
+                //   },
+                // ),
                 const SizedBox(height: 20),
 
                 // Botão

@@ -23,7 +23,7 @@ class CriarContaController {
   Future<bool?> enviarDados(UserModel user) async {
     try {
       final response = await http.post(
-        Uri.parse('http://52.91.106.224:4040/create'),
+        Uri.parse('http://34.207.162.31:4040/create'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(user.toJson()),
       );

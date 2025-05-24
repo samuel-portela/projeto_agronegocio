@@ -15,7 +15,6 @@ class CriarConta extends StatefulWidget {
 
 class _CriarContaState extends State<CriarConta> {
   final controller = CriarContaController();
-  bool _isChecked = false;
 
   @override
   void dispose() {

@@ -20,7 +20,6 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.7.0
-git commit -m "Alteracao do app bar"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -41,10 +40,11 @@ dependencies:
   google_maps_flutter: ^2.5.0
   geolocator: ^10.1.0
   permission_handler: ^11.0.1
-  geocoding: ^2.2.0
+  geocoding: ^2.2.0  
+  font_awesome_flutter: ^10.8.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+
 
 dev_dependencies:
   flutter_test:

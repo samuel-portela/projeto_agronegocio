@@ -11,7 +11,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.green[700],
       centerTitle: true,
 
-      // Ícone do menu na esquerda
       leading: IconButton(
         icon: Icon(Icons.menu, color: Colors.white),
         onPressed: () {
@@ -19,12 +18,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
 
-      // Imagem centralizada no title
-      title: Image.asset('assets/images/logoAndText.png', height: 58),
+      title: Image.asset('assets/images/logoAndText.png', height: 40),
 
-      // Avatar no lado esquerdo junto com o menu (via actions com Spacer)
       actions: [
-        // Trick para empurrar o avatar para a esquerda com espaço à direita
         Padding(
           padding: const EdgeInsets.only(right: 12.0),
           child: CircleAvatar(

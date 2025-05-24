@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_agro/controllers/login_controller.dart';
 import 'package:smart_agro/models/user_login.dart';
 import '../controllers/criar_conta_controller.dart';
@@ -40,6 +41,8 @@ class _CriarContaState extends State<CriarConta> {
       final resultado = await controller.enviarDados(user);
 
       if (resultado == true) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', user.email);
         // Faz login automático após o cadastro
         final loginSuccess = await LoginController().login(
           UserLogin(email: user.email, senha: user.senha),

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_agro/controllers/previsao_controller.dart';
 import 'package:smart_agro/models/previsao_dia.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
-
-
 
 class TelaPrevisao extends StatefulWidget {
   @override
@@ -16,6 +15,8 @@ class TelaPrevisao extends StatefulWidget {
 class _TelaPrevisaoState extends State<TelaPrevisao> {
   final _controller = TextEditingController();
   List<PrevisaoDia> previsoes = [];
+  String _email = '';
+  String _primeiraLetra = '';
 
   Future<void> buscarPrevisao() async {
     final cityName = _controller.text.trim();
@@ -30,28 +31,40 @@ class _TelaPrevisaoState extends State<TelaPrevisao> {
         previsoes = dados;
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Cidade não encontrada')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Cidade não encontrada')));
     }
   }
 
-   @override
+  Future<void> _carregarEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    final emailSalvo = prefs.getString('email') ?? '';
+
+    setState(() {
+      _email = emailSalvo;
+      _primeiraLetra = emailSalvo.isNotEmpty ? emailSalvo[0].toUpperCase() : '';
+    });
+  }
+
+  @override
   void initState() {
     super.initState();
     // Inicializa a localidade para garantir que a data será exibida em português
     initializeDateFormatting('pt_BR', null).then((_) {
-     Intl.defaultLocale = 'pt_BR';
-    _controller.text = 'São João da Boa Vista'; // Coloca o texto no campo de busca
-    buscarPrevisao(); // Definir o locale como pt_BR
+      Intl.defaultLocale = 'pt_BR';
+      _controller.text =
+          'São João da Boa Vista'; // Coloca o texto no campo de busca
+      buscarPrevisao(); // Definir o locale como pt_BR
     });
+    _carregarEmail();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(text: 'T'),
-      drawer: DrawerWidget(nome: 'Trikas', email: 'trikas@exemplo.com'),
+      appBar: AppBarWidget(text: _primeiraLetra),
+      drawer: DrawerWidget(nome: _email, email: ''),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -68,10 +81,7 @@ class _TelaPrevisaoState extends State<TelaPrevisao> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: buscarPrevisao,
-                ),
+                IconButton(icon: Icon(Icons.search), onPressed: buscarPrevisao),
               ],
             ),
             SizedBox(height: 20),

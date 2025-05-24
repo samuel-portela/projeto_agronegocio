@@ -38,13 +38,6 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Configurações'),
-            onTap: () {
-              Navigator.of(context).pushNamed('/configuracoes');
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.logout),
             title: Text('Sair'),
             onTap: () {

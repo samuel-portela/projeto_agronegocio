@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_agro/controllers/precossacas_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
@@ -14,11 +15,24 @@ class PrecosSacasScreen extends StatefulWidget {
 class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
   final controller = PrecossacasController();
   String precoSacas = 'Carregando...';
+  String _email = '';
+  String _primeiraLetra = '';
 
   @override
   void initState() {
     super.initState();
     carregarInformacoes();
+    _carregarEmail();
+  }
+
+  Future<void> _carregarEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    final emailSalvo = prefs.getString('email') ?? '';
+
+    setState(() {
+      _email = emailSalvo;
+      _primeiraLetra = emailSalvo.isNotEmpty ? emailSalvo[0].toUpperCase() : '';
+    });
   }
 
   void carregarInformacoes() async {
@@ -32,29 +46,29 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
   }
 
   bool temMarkdown(String texto) {
-    return texto.contains('*') || texto.contains('- ') || texto.contains('#') || texto.contains('\n');
+    return texto.contains('*') ||
+        texto.contains('- ') ||
+        texto.contains('#') ||
+        texto.contains('\n');
   }
 
   Widget renderTexto(String texto, BuildContext context) {
     return temMarkdown(texto)
         ? MarkdownBody(
-            data: texto,
-            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-              p: const TextStyle(color: Colors.white),
-              listBullet: const TextStyle(color: Colors.white), // bullets brancos
-            ),
-          )
-        : Text(
-            texto,
-            style: const TextStyle(color: Colors.white),
-          );
+          data: texto,
+          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+            p: const TextStyle(color: Colors.white),
+            listBullet: const TextStyle(color: Colors.white), // bullets brancos
+          ),
+        )
+        : Text(texto, style: const TextStyle(color: Colors.white));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(text: 'T'),
-      drawer: DrawerWidget(nome: 'Trikas', email: 'trikas@exemplo.com'),
+      appBar: AppBarWidget(text: _primeiraLetra),
+      drawer: DrawerWidget(nome: _email, email: ''),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

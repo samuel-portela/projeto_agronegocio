@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,6 +7,7 @@ import 'package:smart_agro/controllers/plantacao_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
+import 'package:http/http.dart' as http;
 
 class AgroScreen extends StatefulWidget {
   @override
@@ -40,32 +43,85 @@ class _AgroScreenState extends State<AgroScreen> {
   }
 
   void carregarInformacoes() async {
-    final plantio = await controller.gerarConteudoGemini(
-      'Resuma em tópicos. Qual o plantio ideal para Curitiba no mês de abril? Responda de forma direta.',
-    );
+    final prefs = await SharedPreferences.getInstance();
+    final jwt = prefs.getString('jwt_token') ?? '';
 
-    final agrotoxicos = await controller.gerarConteudoGemini(
-      'Quais agrotóxicos são recomendados para esse tipo de plantio em Curitiba em abril? Fale de forma breve.',
-    );
+    try {
+      final response = await http.get(
+        Uri.parse('http://100.26.193.75:4040/buscar-dados'),
+        headers: {'Authorization': 'Bearer $jwt'},
+      );
 
-    final dicas = await controller.gerarConteudoGemini(
-      'Dicas para cultivar essa plantação em Curitiba no mês de abril. Me diga a previsão de colheita também no final.',
-    );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
 
-    final resultadoAlertaClimatico = await controller.gerarConteudoGemini(
-      'Hipoteticamente Consulte a previsão do tempo atual para a cidade de Curitiba, considerando o dia de hoje. Com base nas informações meteorológicas, diga se há ou não algum alerta climático ativo, como chuvas intensas, geadas, ventos fortes, calor extremo ou qualquer outro fenômeno relevante. Seja direto e objetivo na resposta.',
-    );
+        if (data['message'] is List && data['message'].isNotEmpty) {
+          final fazenda = data['message'][0];
 
-    final alerta = await controller.buscarAlertaClimatico();
+          final nomeFazenda = fazenda['nome'] ?? 'fazenda desconhecida';
+          final tiposPlantacao = (fazenda['tipo_plantacao'] ?? '')
+              .toString()
+              .replaceAll('|', ', ');
 
-    setState(() {
-      plantioIdeal = plantio ?? 'Erro ao buscar informação.';
-      descricaoAgrotoxicos = agrotoxicos ?? 'Erro ao buscar informação.';
-      dicasCultivo = dicas ?? 'Erro ao buscar informação.';
-      alertaClimatico =
-          resultadoAlertaClimatico ?? 'Erro ao buscar informação.';
-      alertaTemperatura = alerta;
-    });
+          print('Nome da Fazenda: $nomeFazenda');
+          print('Tipos de Plantação: $tiposPlantacao');
+
+          final plantio = await controller.gerarConteudoGemini(
+            'Resuma em tópicos. Considerando a fazenda "$nomeFazenda", com as plantações de: $tiposPlantacao, qual o plantio ideal? Seja direto.',
+          );
+
+          final agrotoxicos = await controller.gerarConteudoGemini(
+            'Quais agrotóxicos são recomendados para as plantações de $tiposPlantacao? Seja breve.',
+          );
+
+          final dicas = await controller.gerarConteudoGemini(
+            'Dicas para cultivar $tiposPlantacao na fazenda "$nomeFazenda". Inclua a previsão de colheita no final.',
+          );
+
+          final resultadoAlertaClimatico = await controller.gerarConteudoGemini(
+            'Hipoteticamente, consulte a previsão do tempo atual para Curitiba. Existe algum alerta climático ativo (chuva intensa, geada, calor extremo etc.)? Responda de forma objetiva.',
+          );
+
+          final alerta = await controller.buscarAlertaClimatico();
+
+          setState(() {
+            plantioIdeal = plantio ?? 'Erro ao buscar informação.';
+            descricaoAgrotoxicos = agrotoxicos ?? 'Erro ao buscar informação.';
+            dicasCultivo = dicas ?? 'Erro ao buscar informação.';
+            alertaClimatico =
+                resultadoAlertaClimatico ?? 'Erro ao buscar informação.';
+            alertaTemperatura = alerta;
+          });
+        } else {
+          print('Resposta JSON inesperada ou vazia: ${data['message']}');
+          setState(() {
+            plantioIdeal = 'Dados da fazenda não encontrados.';
+            descricaoAgrotoxicos = 'Dados da fazenda não encontrados.';
+            dicasCultivo = 'Dados da fazenda não encontrados.';
+            alertaClimatico = 'Dados da fazenda não encontrados.';
+            alertaTemperatura = 'Dados da fazenda não encontrados.';
+          });
+        }
+      } else {
+        print('Erro na requisição: ${response.statusCode}');
+        setState(() {
+          plantioIdeal = 'Erro ao buscar dados da fazenda.';
+          descricaoAgrotoxicos = 'Erro ao buscar dados da fazenda.';
+          dicasCultivo = 'Erro ao buscar dados da fazenda.';
+          alertaClimatico = 'Erro ao buscar dados da fazenda.';
+          alertaTemperatura = 'Erro ao buscar dados da fazenda.';
+        });
+      }
+    } catch (e) {
+      print('Erro inesperado: $e');
+      setState(() {
+        plantioIdeal = 'Erro inesperado.';
+        descricaoAgrotoxicos = 'Erro inesperado.';
+        dicasCultivo = 'Erro inesperado.';
+        alertaClimatico = 'Erro inesperado.';
+        alertaTemperatura = 'Erro inesperado.';
+      });
+    }
   }
 
   bool temMarkdown(String texto) {

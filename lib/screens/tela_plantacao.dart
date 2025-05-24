@@ -87,6 +87,29 @@ class _AgroScreenState extends State<AgroScreen> {
         : Text(texto, style: const TextStyle(color: Colors.white));
   }
 
+  Widget renderConteudoOuLoading(String texto, BuildContext context) {
+    if (texto == 'Carregando...' || texto == 'Carrregando...') {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(color: Colors.white),
+        ),
+      );
+    } else {
+      return temMarkdown(texto)
+          ? MarkdownBody(
+            data: texto,
+            styleSheet: MarkdownStyleSheet.fromTheme(
+              Theme.of(context),
+            ).copyWith(
+              p: const TextStyle(color: Colors.white),
+              listBullet: const TextStyle(color: Colors.white),
+            ),
+          )
+          : Text(texto, style: const TextStyle(color: Colors.white));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +146,7 @@ class _AgroScreenState extends State<AgroScreen> {
                       ],
                     ),
                     SizedBox(height: 8),
-                    renderTexto(plantioIdeal, context),
+                    renderConteudoOuLoading(plantioIdeal, context),
                   ],
                 ),
               ),
@@ -158,7 +181,7 @@ class _AgroScreenState extends State<AgroScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    renderTexto(descricaoAgrotoxicos, context),
+                    renderConteudoOuLoading(descricaoAgrotoxicos, context),
                     SizedBox(height: 10),
                     Text(
                       'Dicas de Cultivo:',
@@ -167,7 +190,7 @@ class _AgroScreenState extends State<AgroScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    renderTexto(dicasCultivo, context),
+                    renderConteudoOuLoading(dicasCultivo, context),
                   ],
                 ),
               ),
@@ -195,7 +218,7 @@ class _AgroScreenState extends State<AgroScreen> {
                       ],
                     ),
                     SizedBox(height: 8),
-                    renderTexto(alertaTemperatura, context),
+                    renderConteudoOuLoading(alertaTemperatura, context),
                   ],
                 ),
               ),

@@ -64,6 +64,29 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
         : Text(texto, style: const TextStyle(color: Colors.white));
   }
 
+    Widget renderConteudoOuLoading(String texto, BuildContext context) {
+    if (texto == 'Carregando...' || texto == 'Carrregando...') {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(color: Colors.white),
+        ),
+      );
+    } else {
+      return temMarkdown(texto)
+          ? MarkdownBody(
+            data: texto,
+            styleSheet: MarkdownStyleSheet.fromTheme(
+              Theme.of(context),
+            ).copyWith(
+              p: const TextStyle(color: Colors.white),
+              listBullet: const TextStyle(color: Colors.white),
+            ),
+          )
+          : Text(texto, style: const TextStyle(color: Colors.white));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +121,7 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    renderTexto(precoSacas, context),
+                    renderConteudoOuLoading(precoSacas, context),
                   ],
                 ),
               ),

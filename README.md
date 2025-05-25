@@ -47,6 +47,6 @@ Este projeto está em desenvolvimento constante. Se você é desenvolvedor, desi
 ## 📧 Contato
 
 Em caso de dúvidas, sugestões ou parcerias, entre em contato com a equipe de desenvolvimento através do e-mail:  
-📨 **smartagro.contato@exemplo.com**
+📨 **samuel.portela@sou.unifeob.edu.br**
 
 ---

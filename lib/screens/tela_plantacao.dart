@@ -51,7 +51,7 @@ class _AgroScreenState extends State<AgroScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://100.26.193.75:4040/buscar-dados'),
+        Uri.parse('http://3.84.141.2:4040/buscar-dados'),
         headers: {'Authorization': 'Bearer $jwt'},
       );
 

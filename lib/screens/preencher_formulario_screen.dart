@@ -79,6 +79,32 @@ class _PreencherFormularioScreenState extends State<PreencherFormularioScreen> {
     }
   }
 
+  void _mostrarTermosDeUso() {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Termos de Uso'),
+            content: const SingleChildScrollView(
+              child: Text(
+                'Ao cadastrar a fazenda no aplicativo AgroSmart, você declara estar ciente e de acordo com os Termos de Uso e a Política de Privacidade. '
+                'Os dados fornecidos serão utilizados exclusivamente para fins de análise, melhoria contínua dos nossos serviços, personalização da experiência do usuário '
+                'e para garantir o funcionamento adequado da plataforma.\n\n'
+                'Em conformidade com a Lei Geral de Proteção de Dados (LGPD), garantimos que todas as informações são armazenadas de forma segura, com uso de tecnologias de '
+                'criptografia e boas práticas de segurança da informação.\n\n'
+                'Nenhum dado será compartilhado com terceiros sem o seu consentimento expresso. '
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: const Text('Fechar'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +116,7 @@ class _PreencherFormularioScreenState extends State<PreencherFormularioScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/images/logo.jpg', height: 150),
+                Image.asset('assets/images/logo.png', height: 150),
                 const SizedBox(height: 20),
                 const Text(
                   'AgroSmart',
@@ -138,6 +164,26 @@ class _PreencherFormularioScreenState extends State<PreencherFormularioScreen> {
                 CustomButton(
                   text: _isLoading ? 'Enviando...' : 'Enviar',
                   onPressed: _isLoading ? null : _enviarFormulario,
+                ),
+                const SizedBox(height: 10),
+                GestureDetector(
+                  onTap: _mostrarTermosDeUso,
+                  child: const Text.rich(
+                    TextSpan(
+                      text: 'Ao cadastrar, você aceita os ',
+                      children: [
+                        TextSpan(
+                          text: 'Termos de Uso',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),

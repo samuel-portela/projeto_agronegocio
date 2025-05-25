@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../controllers/recuperar_conta_controller.dart';
 import '../widgets/custom_button.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class RecuperarConta extends StatefulWidget {
   const RecuperarConta({Key? key}) : super(key: key);
@@ -31,6 +32,11 @@ class _RecuperarContaState extends State<RecuperarConta> {
       });
     }
   }
+
+  final telefoneMask = MaskTextInputFormatter(
+    mask: '+## (##) #####-####',
+    filter: {"#": RegExp(r'[0-9]')},
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +97,7 @@ class _RecuperarContaState extends State<RecuperarConta> {
                     }
                     return null;
                   },
+                  inputFormatters: [telefoneMask],
                 ),
                 const SizedBox(height: 20),
 

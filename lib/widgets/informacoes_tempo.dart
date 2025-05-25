@@ -13,7 +13,7 @@ class InformacoesTempo extends StatefulWidget {
 }
 
 class _InformacoesTempoState extends State<InformacoesTempo> {
-  late Future<ClimaModel> _climaFuturo;
+  late Future<ClimaModel>? _climaFuturo;
 
   static const String _cidadeKey = 'cidade';
   late String _cidadeAtual;
@@ -26,9 +26,14 @@ class _InformacoesTempoState extends State<InformacoesTempo> {
 
   Future<void> _carregarClima() async {
     final prefs = await SharedPreferences.getInstance();
-    _cidadeAtual = prefs.getString(_cidadeKey) ?? 'Tokyo';
+    final cidadeSalva = prefs.getString(_cidadeKey) ?? 'Tokyo';
 
-    print('🔍 Buscando clima para cidade: $_cidadeAtual');
+    print('🔍 Buscando clima para cidade: $cidadeSalva');
+
+    _cidadeAtual =
+        (cidadeSalva.trim().isNotEmpty)
+            ? cidadeSalva
+            : 'São João da Boa Vista';
 
     setState(() {
       _climaFuturo = ClimaController().buscarClimaAtual(cidade: _cidadeAtual);
@@ -55,7 +60,7 @@ class _InformacoesTempoState extends State<InformacoesTempo> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Erro ao carregar o clima 🌩️\n${snapshot.error}\nCidade buscada: $_cidadeAtual',
+                'Erro ao carregar o clima 🌩️\n${snapshot.error}\nCidade buscada: ${_cidadeAtual.isNotEmpty ? _cidadeAtual : "desconhecida"}',
                 style: GoogleFonts.quicksand(color: Colors.red, fontSize: 16),
                 textAlign: TextAlign.center,
               ),

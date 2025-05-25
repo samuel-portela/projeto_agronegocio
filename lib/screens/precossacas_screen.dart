@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_agro/controllers/precossacas_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
+import 'package:smart_agro/widgets/green_gradient_background.dart';
 
 class PrecosSacasScreen extends StatefulWidget {
   const PrecosSacasScreen({super.key});
@@ -55,35 +57,33 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
   Widget renderTexto(String texto, BuildContext context) {
     return temMarkdown(texto)
         ? MarkdownBody(
-          data: texto,
-          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-            p: const TextStyle(color: Colors.white),
-            listBullet: const TextStyle(color: Colors.white), // bullets brancos
-          ),
-        )
-        : Text(texto, style: const TextStyle(color: Colors.white));
+            data: texto,
+            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+              p: GoogleFonts.quicksand(color: Colors.white),
+              listBullet: GoogleFonts.quicksand(color: Colors.white),
+            ),
+          )
+        : Text(texto, style: GoogleFonts.quicksand(color: Colors.white));
   }
 
-    Widget renderConteudoOuLoading(String texto, BuildContext context) {
+  Widget renderConteudoOuLoading(String texto, BuildContext context) {
     if (texto == 'Carregando...' || texto == 'Carrregando...') {
-      return Center(
+      return const Center(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: CircularProgressIndicator(color: Colors.white),
         ),
       );
     } else {
       return temMarkdown(texto)
           ? MarkdownBody(
-            data: texto,
-            styleSheet: MarkdownStyleSheet.fromTheme(
-              Theme.of(context),
-            ).copyWith(
-              p: const TextStyle(color: Colors.white),
-              listBullet: const TextStyle(color: Colors.white),
-            ),
-          )
-          : Text(texto, style: const TextStyle(color: Colors.white));
+              data: texto,
+              styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+                p: GoogleFonts.quicksand(color: Colors.white),
+                listBullet: GoogleFonts.quicksand(color: Colors.white),
+              ),
+            )
+          : Text(texto, style: GoogleFonts.quicksand(color: Colors.white));
     }
   }
 
@@ -92,40 +92,42 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
     return Scaffold(
       appBar: AppBarWidget(text: _primeiraLetra),
       drawer: DrawerWidget(nome: _email, email: ''),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: const [
-                        Icon(Icons.attach_money, color: Colors.white),
-                        SizedBox(width: 8),
-                        Text(
-                          'Cotações de Sacas:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 18,
+      body: GreenGradientBackground(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.attach_money, color: Colors.white),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Cotações de Sacas:',
+                            style: GoogleFonts.quicksand(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    renderConteudoOuLoading(precoSacas, context),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      renderConteudoOuLoading(precoSacas, context),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

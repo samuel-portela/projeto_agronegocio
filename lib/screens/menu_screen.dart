@@ -7,6 +7,7 @@ import 'package:smart_agro/widgets/custom_button.dart';
 import 'package:smart_agro/widgets/green_gradient_background.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -80,7 +81,7 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
             children: [
               const SizedBox(height: 80),
               InformacoesTempo(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               CustomButton(
                 text: 'Informações Plantio',
                 icon: FontAwesomeIcons.seedling,
@@ -91,15 +92,15 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
               const SizedBox(height: 20),
               CustomButton(
                 text: 'Preços das sacas',
-                icon: FontAwesomeIcons.moneyCheckDollar,
+                icon: FontAwesomeIcons.dollarSign,
                 onPressed: () {
                   Navigator.of(context).pushNamed('/precosacaScreen');
                 },
               ),
               const SizedBox(height: 20),
               CustomButton(
-                text: 'Previsão dos próximos 5 dias',
-                icon: Icons.wb_sunny,
+                text: 'Previsão dos próximos dias',
+                icon: FontAwesomeIcons.cloudRain,
                 onPressed: () {
                   Navigator.of(context).pushNamed('/previsao-tempo');
                 },

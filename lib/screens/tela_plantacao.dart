@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_agro/controllers/plantacao_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
+import 'package:smart_agro/widgets/green_gradient_background.dart';
 import 'package:http/http.dart' as http;
 
 class AgroScreen extends StatefulWidget {
@@ -88,8 +91,7 @@ class _AgroScreenState extends State<AgroScreen> {
             plantioIdeal = plantio ?? 'Erro ao buscar informação.';
             descricaoAgrotoxicos = agrotoxicos ?? 'Erro ao buscar informação.';
             dicasCultivo = dicas ?? 'Erro ao buscar informação.';
-            alertaClimatico =
-                resultadoAlertaClimatico ?? 'Erro ao buscar informação.';
+            alertaClimatico = resultadoAlertaClimatico ?? 'Erro ao buscar informação.';
             alertaTemperatura = alerta;
           });
         } else {
@@ -134,13 +136,16 @@ class _AgroScreenState extends State<AgroScreen> {
   Widget renderTexto(String texto, BuildContext context) {
     return temMarkdown(texto)
         ? MarkdownBody(
-          data: texto,
-          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-            p: const TextStyle(color: Colors.white),
-            listBullet: const TextStyle(color: Colors.white),
-          ),
-        )
-        : Text(texto, style: const TextStyle(color: Colors.white));
+            data: texto,
+            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+              p: GoogleFonts.roboto(color: Colors.white),
+              listBullet: GoogleFonts.roboto(color: Colors.white),
+            ),
+          )
+        : Text(
+            texto,
+            style: GoogleFonts.roboto(color: Colors.white, fontSize: 14),
+          );
   }
 
   Widget renderConteudoOuLoading(String texto, BuildContext context) {
@@ -152,133 +157,131 @@ class _AgroScreenState extends State<AgroScreen> {
         ),
       );
     } else {
-      return temMarkdown(texto)
-          ? MarkdownBody(
-            data: texto,
-            styleSheet: MarkdownStyleSheet.fromTheme(
-              Theme.of(context),
-            ).copyWith(
-              p: const TextStyle(color: Colors.white),
-              listBullet: const TextStyle(color: Colors.white),
-            ),
-          )
-          : Text(texto, style: const TextStyle(color: Colors.white));
+      return renderTexto(texto, context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWidget(text: _primeiraLetra),
-      drawer: DrawerWidget(nome: _email, email: ''),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InformacoesTempo(),
-              SizedBox(height: 20),
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.agriculture, color: Colors.white),
-                        SizedBox(width: 8),
-                        Text(
-                          'Plantio Ideal:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+    return GreenGradientBackground(
+      child: Scaffold(
+        appBar: AppBarWidget(text: _primeiraLetra),
+        drawer: DrawerWidget(nome: _email, email: ''),
+        backgroundColor: Colors.transparent,
+        body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InformacoesTempo(),
+                SizedBox(height: 20),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(FontAwesomeIcons.seedling, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            'Plantio Ideal:',
+                            style: GoogleFonts.quicksand(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    renderConteudoOuLoading(plantioIdeal, context),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.info, color: Colors.white),
-                        SizedBox(width: 5),
-                        Text(
-                          'Informações:',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Agrotóxicos recomendados:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        ],
                       ),
-                    ),
-                    renderConteudoOuLoading(descricaoAgrotoxicos, context),
-                    SizedBox(height: 10),
-                    Text(
-                      'Dicas de Cultivo:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    renderConteudoOuLoading(dicasCultivo, context),
-                  ],
+                      SizedBox(height: 8),
+                      renderConteudoOuLoading(plantioIdeal, context),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.yellow.shade700,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.warning, color: Colors.white),
-                        SizedBox(width: 5),
-                        Text(
-                          'Alerta Climático:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                SizedBox(height: 20),
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(FontAwesomeIcons.circleInfo, color: Colors.white),
+                          SizedBox(width: 5),
+                          Text(
+                            'Informações:',
+                            style: GoogleFonts.quicksand(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Agrotóxicos recomendados:',
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 14,
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    renderConteudoOuLoading(alertaTemperatura, context),
-                  ],
+                      ),
+                      renderConteudoOuLoading(descricaoAgrotoxicos, context),
+                      SizedBox(height: 10),
+                      Text(
+                        'Dicas de Cultivo:',
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                      renderConteudoOuLoading(dicasCultivo, context),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: 20),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.yellow.shade800,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(FontAwesomeIcons.triangleExclamation, color: Colors.white),
+                          SizedBox(width: 5),
+                          Text(
+                            'Alerta Climático:',
+                            style: GoogleFonts.quicksand(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      renderConteudoOuLoading(alertaTemperatura, context),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

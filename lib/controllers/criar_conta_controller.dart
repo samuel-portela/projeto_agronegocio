@@ -24,7 +24,11 @@ class CriarContaController {
   Future<bool?> enviarDados(UserModel user) async {
     try {
 
+<<<<<<< HEAD
       final response = await client.post(
+=======
+      final response = await http.post(
+>>>>>>> 45ed48c (Ajustes dos testes)
         Uri.parse('http://3.84.141.2:4040/create'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(user.toJson()),

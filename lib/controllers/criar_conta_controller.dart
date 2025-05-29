@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as client;
 import 'dart:convert';
 import '../models/user_model.dart';
 
@@ -22,14 +23,9 @@ class CriarContaController {
 
   Future<bool?> enviarDados(UserModel user) async {
     try {
-<<<<<<< HEAD
-=======
+
       final response = await client.post(
         Uri.parse('http://52.91.106.224:4040/create'),
-
->>>>>>> 95f7f2c (Implementacao dos testes de integracao)
-      final response = await http.post(
-        Uri.parse('http://3.84.141.2:4040/create'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(user.toJson()),
       );

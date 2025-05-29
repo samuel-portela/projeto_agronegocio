@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String text;
@@ -22,20 +21,41 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Image.asset('assets/images/logoAndText.png', height: 40),
 
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 12.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Text(
-              text,
-              style: GoogleFonts.montserrat(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
+        IconButton(
+          icon: Icon(Icons.logout, color: Colors.white),
+          onPressed: () {
+            _showLogoutDialog(context);
+          },
         ),
+        SizedBox(width: 8),
       ],
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirmação'),
+        content: Text('Deseja realmente sair?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/', // substitua pela rota da tela de login, se necessário
+                (route) => false,
+              );
+            },
+            child: Text('Sair'),
+          ),
+        ],
+      ),
     );
   }
 

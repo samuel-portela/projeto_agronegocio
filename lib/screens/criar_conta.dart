@@ -6,6 +6,7 @@ import '../controllers/criar_conta_controller.dart';
 import '../models/user_model.dart';
 import '../widgets/custom_buttom_criar_conta.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:http/http.dart' as http;
 
 class CriarConta extends StatefulWidget {
   const CriarConta({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class CriarConta extends StatefulWidget {
 }
 
 class _CriarContaState extends State<CriarConta> {
-  final controller = CriarContaController();
+  final controller = CriarContaController(client: http.Client());
 
   @override
   void dispose() {
@@ -43,7 +44,7 @@ class _CriarContaState extends State<CriarConta> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('email', user.email);
         // Faz login automático após o cadastro
-        final loginSuccess = await LoginController().login(
+        final loginSuccess = await LoginController(client: http.Client()).login(
           UserLogin(email: user.email, senha: user.senha),
         );
 

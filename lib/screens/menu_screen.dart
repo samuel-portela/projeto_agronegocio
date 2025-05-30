@@ -7,7 +7,6 @@ import 'package:smart_agro/widgets/custom_button.dart';
 import 'package:smart_agro/widgets/green_gradient_background.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});

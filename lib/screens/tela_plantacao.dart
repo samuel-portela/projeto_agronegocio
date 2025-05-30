@@ -18,7 +18,7 @@ class AgroScreen extends StatefulWidget {
 }
 
 class _AgroScreenState extends State<AgroScreen> {
-  final controller = PlantacaoController();
+  final controller = PlantacaoController(client: http.Client());
 
   String plantioIdeal = 'Carregando...';
   String descricaoAgrotoxicos = 'Carregando...';
@@ -51,7 +51,7 @@ class _AgroScreenState extends State<AgroScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://3.84.141.2:4040/buscar-dados'),
+        Uri.parse('http://34.201.128.160:4040/buscar-dados'),
         headers: {'Authorization': 'Bearer $jwt'},
       );
 

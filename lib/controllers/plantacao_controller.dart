@@ -2,6 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class PlantacaoController {
+  final http.Client client;
+
+  PlantacaoController({required this.client});
+
   final String _apiKey = 'AIzaSyDVTJUPZBpyMIVG8pJtxnkDPZxLkHGnbBo';
   final String _baseUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=';

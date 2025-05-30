@@ -6,6 +6,7 @@ import 'package:smart_agro/controllers/precossacas_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/menu_hamburguer.dart';
 import 'package:smart_agro/widgets/green_gradient_background.dart';
+import 'package:http/http.dart' as http;
 
 class PrecosSacasScreen extends StatefulWidget {
   const PrecosSacasScreen({super.key});
@@ -15,7 +16,7 @@ class PrecosSacasScreen extends StatefulWidget {
 }
 
 class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
-  final controller = PrecossacasController();
+  final controller = PrecossacasController(client: http.Client());
   String precoSacas = 'Carregando...';
   String _email = '';
   String _primeiraLetra = '';

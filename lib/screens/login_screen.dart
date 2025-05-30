@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/login_controller.dart';
 import '../models/user_login.dart';
 import '../widgets/custom_button.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
-  final _loginController = LoginController();
+  final _loginController = LoginController(client: http.Client());
   bool _isLoading = false;
 
   static const String _cidadeKey = 'cidade';

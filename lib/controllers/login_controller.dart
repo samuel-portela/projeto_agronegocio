@@ -4,8 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_login.dart';
 
 class LoginController {
+  final http.Client client;
+
+  LoginController({required this.client});
+
   Future<bool> login(UserLogin user) async {
-    final url = Uri.parse('http://3.84.141.2:4040/login');
+    final url = Uri.parse('http://34.201.128.160:4040/login');
 
     try {
       final response = await http.post(

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_agro/controllers/plantacao_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
-import 'package:smart_agro/widgets/menu_hamburguer.dart';
 import 'package:smart_agro/widgets/green_gradient_background.dart';
 import 'package:http/http.dart' as http;
 
@@ -166,7 +164,6 @@ class _AgroScreenState extends State<AgroScreen> {
     return GreenGradientBackground(
       child: Scaffold(
         appBar: AppBarWidget(text: _primeiraLetra),
-        drawer: DrawerWidget(nome: _email, email: ''),
         backgroundColor: Colors.transparent,
         body: Padding(
           padding: EdgeInsets.all(16.0),

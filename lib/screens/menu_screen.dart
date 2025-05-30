@@ -6,7 +6,6 @@ import 'package:smart_agro/widgets/app_bar.dart';
 import 'package:smart_agro/widgets/custom_button.dart';
 import 'package:smart_agro/widgets/green_gradient_background.dart';
 import 'package:smart_agro/widgets/informacoes_tempo.dart';
-import 'package:smart_agro/widgets/menu_hamburguer.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -71,7 +70,6 @@ class _MenuScreenState extends State<MenuScreen> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(text: _primeiraLetra),
-      drawer: DrawerWidget(nome: _email, email: ''),
       body: GreenGradientBackground(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),

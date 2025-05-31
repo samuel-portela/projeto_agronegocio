@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
-import 'package:smart_agro/widgets/menu_hamburguer.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,8 +33,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(text: 'A'),
-      drawer: DrawerWidget(nome: 'Antonio', email: 'joao.silva@exemplo.com'),
+      appBar: AppBarWidget(text: ''),
       body: Column(
         children: [
           Padding(

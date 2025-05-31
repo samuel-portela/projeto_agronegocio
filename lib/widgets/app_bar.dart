@@ -12,10 +12,15 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
 
       leading: IconButton(
-        icon: Icon(Icons.menu, color: Colors.white),
-        onPressed: () {
-          Scaffold.maybeOf(context)?.openDrawer();
-        },
+        icon: Icon(Icons.home, color: Colors.white),
+        onPressed:() {
+              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/menuScreen',
+                (route) => false,
+              );
+            },
       ),
 
       title: Image.asset('assets/images/logoAndText.png', height: 40),
@@ -48,7 +53,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               Navigator.pop(context);
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                '/', // substitua pela rota da tela de login, se necessário
+                '/',
                 (route) => false,
               );
             },

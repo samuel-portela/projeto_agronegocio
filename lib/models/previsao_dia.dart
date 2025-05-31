@@ -16,6 +16,6 @@ class PrevisaoDia {
   });
 
   String get diaFormatado {
-    return DateFormat('EEEE dd/MM/yyyy').format(data);  // Exemplo: Segunda-feira 28/04/2024
+    return DateFormat('EEEE dd/MM/yyyy').format(data);
   }
 }

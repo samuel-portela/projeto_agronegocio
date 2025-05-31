@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_agro/controllers/precossacas_controller.dart';
 import 'package:smart_agro/widgets/app_bar.dart';
-import 'package:smart_agro/widgets/menu_hamburguer.dart';
 import 'package:smart_agro/widgets/green_gradient_background.dart';
 import 'package:http/http.dart' as http;
 
@@ -92,7 +91,6 @@ class _PrecosSacasScreenState extends State<PrecosSacasScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(text: _primeiraLetra),
-      drawer: DrawerWidget(nome: _email, email: ''),
       body: GreenGradientBackground(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

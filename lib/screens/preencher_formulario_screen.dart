@@ -13,13 +13,9 @@ class PreencherFormularioScreen extends StatefulWidget {
 
 class _PreencherFormularioScreenState extends State<PreencherFormularioScreen> {
   final _formKey = GlobalKey<FormState>();
-
-  // Listas de controllers para várias fazendas e plantações
   final List<TextEditingController> _fazendaControllers = [];
   final List<TextEditingController> _plantacaoControllers = [];
-
   bool _isLoading = false;
-
   final _controller = DadosController();
 
   @override
@@ -29,12 +25,9 @@ class _PreencherFormularioScreenState extends State<PreencherFormularioScreen> {
   }
 
   void _addNovaFazenda() {
-    final fazendaController = TextEditingController();
-    final plantacaoController = TextEditingController();
-
     setState(() {
-      _fazendaControllers.add(fazendaController);
-      _plantacaoControllers.add(plantacaoController);
+      _fazendaControllers.add(TextEditingController());
+      _plantacaoControllers.add(TextEditingController());
     });
   }
 
@@ -112,7 +105,7 @@ class _PreencherFormularioScreenState extends State<PreencherFormularioScreen> {
                 'e para garantir o funcionamento adequado da plataforma.\n\n'
                 'Em conformidade com a Lei Geral de Proteção de Dados (LGPD), garantimos que todas as informações são armazenadas de forma segura, com uso de tecnologias de '
                 'criptografia e boas práticas de segurança da informação.\n\n'
-                'Nenhum dado será compartilhado com terceiros sem o seu consentimento expresso. ',
+                'Nenhum dado será compartilhado com terceiros sem o seu consentimento expresso.',
               ),
             ),
             actions: [
@@ -139,135 +132,132 @@ class _PreencherFormularioScreenState extends State<PreencherFormularioScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-          _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/images/logo.png', height: 150),
-                        const SizedBox(height: 20),
-                        const Text(
-                          'AgroSmart',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                            shadows: [
-                              Shadow(color: Colors.black45, blurRadius: 3),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          'Cadastro das Fazendas',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
+      body: Stack(
+        children: [
+          _buildFormularioContent(),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _fazendaControllers.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextFormField(
-                                  controller: _fazendaControllers[index],
-                                  decoration: InputDecoration(
-                                    labelText: 'Nome da Fazenda ${index + 1}',
-                                    border: const OutlineInputBorder(),
-                                    suffixIcon:
-                                        _fazendaControllers.length > 1
-                                            ? IconButton(
-                                              icon: const Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
-                                              ),
-                                              onPressed:
-                                                  () => _removerFazenda(index),
-                                            )
-                                            : null,
-                                  ),
-                                  validator:
-                                      (value) =>
-                                          value == null || value.isEmpty
-                                              ? 'Informe o nome da fazenda'
-                                              : null,
-                                ),
-                                const SizedBox(height: 12),
-                                TextFormField(
-                                  controller: _plantacaoControllers[index],
-                                  decoration: const InputDecoration(
-                                    labelText:
-                                        'Tipos de Plantação (separados por vírgula)',
-                                    hintText: 'Ex: Milho, Soja, Café',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  validator:
-                                      (value) =>
-                                          value == null || value.isEmpty
-                                              ? 'Informe pelo menos uma plantação'
-                                              : null,
-                                ),
-
-                                const SizedBox(height: 30),
-                              ],
-                            );
-                          },
-                        ),
-
-                        ElevatedButton.icon(
-                          onPressed: _addNovaFazenda,
-                          icon: const Icon(Icons.add),
-                          label: const Text('Adicionar outra fazenda'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                          ),
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        CustomButton(
-                          text: _isLoading ? 'Enviando...' : 'Enviar',
-                          onPressed: _isLoading ? null : _enviarFormulario,
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        GestureDetector(
-                          onTap: _mostrarTermosDeUso,
-                          child: const Text.rich(
-                            TextSpan(
-                              text: 'Ao cadastrar, você aceita os ',
-                              children: [
-                                TextSpan(
-                                  text: 'Termos de Uso',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+  Widget _buildFormularioContent() {
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/logo.png', height: 150),
+              const SizedBox(height: 20),
+              const Text(
+                'AgroSmart',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                  shadows: [Shadow(color: Colors.black45, blurRadius: 3)],
                 ),
               ),
+              const SizedBox(height: 20),
+              const Text(
+                'Cadastro das Fazendas',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _fazendaControllers.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _fazendaControllers[index],
+                        decoration: InputDecoration(
+                          labelText: 'Nome da Fazenda ${index + 1}',
+                          border: const OutlineInputBorder(),
+                          suffixIcon:
+                              _fazendaControllers.length > 1
+                                  ? IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () => _removerFazenda(index),
+                                  )
+                                  : null,
+                        ),
+                        validator:
+                            (value) =>
+                                value == null || value.isEmpty
+                                    ? 'Informe o nome da fazenda'
+                                    : null,
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: _plantacaoControllers[index],
+                        decoration: const InputDecoration(
+                          labelText:
+                              'Tipos de Plantação (separados por vírgula)',
+                          hintText: 'Ex: Milho, Soja, Café',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator:
+                            (value) =>
+                                value == null || value.isEmpty
+                                    ? 'Informe pelo menos uma plantação'
+                                    : null,
+                      ),
+                      const SizedBox(height: 30),
+                    ],
+                  );
+                },
+              ),
+              ElevatedButton.icon(
+                onPressed: _addNovaFazenda,
+                icon: const Icon(Icons.add),
+                label: const Text('Adicionar outra fazenda'),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              ),
+              const SizedBox(height: 30),
+              CustomButton(
+                text: _isLoading ? 'Enviando...' : 'Enviar',
+                onPressed: _isLoading ? null : _enviarFormulario,
+              ),
+              const SizedBox(height: 10),
+              GestureDetector(
+                onTap: _mostrarTermosDeUso,
+                child: const Text.rich(
+                  TextSpan(
+                    text: 'Ao cadastrar, você aceita os ',
+                    children: [
+                      TextSpan(
+                        text: 'Termos de Uso',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

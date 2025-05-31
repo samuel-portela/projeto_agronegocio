@@ -23,7 +23,7 @@ class SmartAgro extends StatelessWidget {
       navigatorObservers: [rotaObserver],
       title: 'Agro Smart | Bem-vindo(a)!',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/menuScreen', // Define a tela inicial do app
+      initialRoute: '/', // Define a tela inicial do app
       routes: {
         '/': (context) => LoginScreen(), // Tela inicial (Login) 
         '/recuperarSenha':

@@ -24,8 +24,11 @@ class _CriarContaState extends State<CriarConta> {
     super.dispose();
   }
 
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+
   final telefoneMask = MaskTextInputFormatter(
-    mask: '+## (##) #####-####',
+    mask: '+55 (##) #####-####',
     filter: {"#": RegExp(r'[0-9]')},
   );
 
@@ -44,9 +47,9 @@ class _CriarContaState extends State<CriarConta> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('email', user.email);
         // Faz login automático após o cadastro
-        final loginSuccess = await LoginController(client: http.Client()).login(
-          UserLogin(email: user.email, senha: user.senha),
-        );
+        final loginSuccess = await LoginController(
+          client: http.Client(),
+        ).login(UserLogin(email: user.email, senha: user.senha));
 
         if (loginSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -136,26 +139,59 @@ class _CriarContaState extends State<CriarConta> {
                 // Senha
                 TextFormField(
                   controller: controller.senhaController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                  obscureText: _obscurePassword,
+                  decoration: InputDecoration(
                     labelText: 'Senha',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
+                    helperText:
+                        'Mínimo 8 caracteres com letras, números e símbolos',
                   ),
-                  validator:
-                      (value) =>
-                          value == null || value.length < 6
-                              ? 'A senha deve ter pelo menos 6 caracteres'
-                              : null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Digite sua senha';
+                    } else if (value.length < 8) {
+                      return 'A senha deve ter no mínimo 8 caracteres';
+                    } else if (!RegExp(
+                      r'(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])',
+                    ).hasMatch(value)) {
+                      return 'A senha deve conter letra maiúscula, minúscula, número e símbolo';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
 
                 // Confirmar Senha
                 TextFormField(
                   controller: controller.confirmarSenhaController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                  obscureText: _obscureConfirmPassword,
+                  decoration: InputDecoration(
                     labelText: 'Confirme sua senha',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureConfirmPassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureConfirmPassword = !_obscureConfirmPassword;
+                        });
+                      },
+                    ),
                   ),
                   validator:
                       (value) =>
@@ -163,6 +199,7 @@ class _CriarContaState extends State<CriarConta> {
                               ? 'As senhas não coincidem'
                               : null,
                 ),
+
                 const SizedBox(height: 20),
 
                 // Telefone

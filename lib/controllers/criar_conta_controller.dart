@@ -27,7 +27,7 @@ class CriarContaController {
   Future<bool?> enviarDados(UserModel user) async {
     try {
       final response = await client.post(
-        Uri.parse('http://52.91.106.224:4040/create'),
+        Uri.parse('http://34.201.128.160:4040/create'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(user.toJson()),
       );

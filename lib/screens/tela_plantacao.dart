@@ -28,6 +28,9 @@ class _AgroScreenState extends State<AgroScreen> {
   String _email = '';
   String _primeiraLetra = '';
 
+  List<Map<String, dynamic>> fazendas = [];
+  Map<String, dynamic>? fazendaSelecionada;
+
   @override
   void initState() {
     super.initState();
@@ -59,70 +62,70 @@ class _AgroScreenState extends State<AgroScreen> {
         final data = jsonDecode(response.body);
 
         if (data['message'] is List && data['message'].isNotEmpty) {
-          final fazenda = data['message'][0];
-
-          final nomeFazenda = fazenda['nome'] ?? 'fazenda desconhecida';
-          final tiposPlantacao = (fazenda['tipo_plantacao'] ?? '')
-              .toString()
-              .replaceAll('|', ', ');
-
-          print('Nome da Fazenda: $nomeFazenda');
-          print('Tipos de Plantação: $tiposPlantacao');
-
-          final plantio = await controller.gerarConteudoGemini(
-            'Resuma em tópicos. Considerando a fazenda "$nomeFazenda", com as plantações de: $tiposPlantacao, qual o plantio ideal? Seja direto.',
-          );
-
-          final agrotoxicos = await controller.gerarConteudoGemini(
-            'Quais agrotóxicos são recomendados para as plantações de $tiposPlantacao? Seja breve.',
-          );
-
-          final dicas = await controller.gerarConteudoGemini(
-            'Dicas para cultivar $tiposPlantacao na fazenda "$nomeFazenda". Inclua a previsão de colheita no final.',
-          );
-
-          final resultadoAlertaClimatico = await controller.gerarConteudoGemini(
-            'Hipoteticamente, consulte a previsão do tempo atual para Curitiba. Existe algum alerta climático ativo (chuva intensa, geada, calor extremo etc.)? Responda de forma objetiva.',
-          );
-
-          final alerta = await controller.buscarAlertaClimatico();
-
           setState(() {
-            plantioIdeal = plantio ?? 'Erro ao buscar informação.';
-            descricaoAgrotoxicos = agrotoxicos ?? 'Erro ao buscar informação.';
-            dicasCultivo = dicas ?? 'Erro ao buscar informação.';
-            alertaClimatico = resultadoAlertaClimatico ?? 'Erro ao buscar informação.';
-            alertaTemperatura = alerta;
+            fazendas = List<Map<String, dynamic>>.from(data['message']);
+            fazendaSelecionada = fazendas[0];
           });
+
+          _carregarInformacoesDaFazenda(fazendaSelecionada!);
         } else {
-          print('Resposta JSON inesperada ou vazia: ${data['message']}');
-          setState(() {
-            plantioIdeal = 'Dados da fazenda não encontrados.';
-            descricaoAgrotoxicos = 'Dados da fazenda não encontrados.';
-            dicasCultivo = 'Dados da fazenda não encontrados.';
-            alertaClimatico = 'Dados da fazenda não encontrados.';
-            alertaTemperatura = 'Dados da fazenda não encontrados.';
-          });
+          _mostrarErro('Dados da fazenda não encontrados.');
         }
       } else {
-        print('Erro na requisição: ${response.statusCode}');
-        setState(() {
-          plantioIdeal = 'Erro ao buscar dados da fazenda.';
-          descricaoAgrotoxicos = 'Erro ao buscar dados da fazenda.';
-          dicasCultivo = 'Erro ao buscar dados da fazenda.';
-          alertaClimatico = 'Erro ao buscar dados da fazenda.';
-          alertaTemperatura = 'Erro ao buscar dados da fazenda.';
-        });
+        _mostrarErro('Erro ao buscar dados da fazenda.');
       }
     } catch (e) {
-      print('Erro inesperado: $e');
+      _mostrarErro('Erro inesperado.');
+    }
+  }
+
+  void _mostrarErro(String mensagem) {
+    setState(() {
+      plantioIdeal = mensagem;
+      descricaoAgrotoxicos = mensagem;
+      dicasCultivo = mensagem;
+      alertaClimatico = mensagem;
+      alertaTemperatura = mensagem;
+    });
+  }
+
+  Future<void> _carregarInformacoesDaFazenda(
+    Map<String, dynamic> fazenda,
+  ) async {
+    final nomeFazenda = fazenda['nome'] ?? 'fazenda desconhecida';
+    final tiposPlantacao = (fazenda['tipo_plantacao'] ?? '')
+        .toString()
+        .replaceAll('|', ', ');
+
+    try {
+      final plantio = await controller.gerarConteudoGemini(
+        'Resuma em tópicos. Considerando a fazenda "$nomeFazenda", com as plantações de: $tiposPlantacao, qual o plantio ideal? Seja direto.',
+      );
+
+      final agrotoxicos = await controller.gerarConteudoGemini(
+        'Quais agrotóxicos são recomendados para as plantações de $tiposPlantacao? Seja breve.',
+      );
+
+      final dicas = await controller.gerarConteudoGemini(
+        'Dicas para cultivar $tiposPlantacao na fazenda "$nomeFazenda". Inclua a previsão de colheita no final.',
+      );
+
+      final resultadoAlertaClimatico = await controller.gerarConteudoGemini(
+        'Hipoteticamente, consulte a previsão do tempo atual para Curitiba. Existe algum alerta climático ativo (chuva intensa, geada, calor extremo etc.)? Responda de forma objetiva.',
+      );
+
+      final alerta = await controller.buscarAlertaClimatico();
+
       setState(() {
-        plantioIdeal = 'Erro inesperado.';
-        descricaoAgrotoxicos = 'Erro inesperado.';
-        dicasCultivo = 'Erro inesperado.';
-        alertaClimatico = 'Erro inesperado.';
-        alertaTemperatura = 'Erro inesperado.';
+        plantioIdeal = plantio ?? 'Erro ao buscar informação.';
+        descricaoAgrotoxicos = agrotoxicos ?? 'Erro ao buscar informação.';
+        dicasCultivo = dicas ?? 'Erro ao buscar informação.';
+        alertaClimatico =
+            resultadoAlertaClimatico ?? 'Erro ao buscar informação.';
+        alertaTemperatura = alerta;
       });
+    } catch (e) {
+      _mostrarErro('Erro inesperado.');
     }
   }
 
@@ -136,16 +139,16 @@ class _AgroScreenState extends State<AgroScreen> {
   Widget renderTexto(String texto, BuildContext context) {
     return temMarkdown(texto)
         ? MarkdownBody(
-            data: texto,
-            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-              p: GoogleFonts.roboto(color: Colors.white),
-              listBullet: GoogleFonts.roboto(color: Colors.white),
-            ),
-          )
+          data: texto,
+          styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+            p: GoogleFonts.roboto(color: Colors.white),
+            listBullet: GoogleFonts.roboto(color: Colors.white),
+          ),
+        )
         : Text(
-            texto,
-            style: GoogleFonts.roboto(color: Colors.white, fontSize: 14),
-          );
+          texto,
+          style: GoogleFonts.roboto(color: Colors.white, fontSize: 14),
+        );
   }
 
   Widget renderConteudoOuLoading(String texto, BuildContext context) {
@@ -175,6 +178,48 @@ class _AgroScreenState extends State<AgroScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InformacoesTempo(),
+                SizedBox(height: 20),
+
+                // Dropdown de seleção de fazenda
+                if (fazendas.isNotEmpty)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade700,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: DropdownButton<Map<String, dynamic>>(
+                      value: fazendaSelecionada,
+                      isExpanded: true,
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                      dropdownColor: Colors.green.shade800,
+                      underline: SizedBox(),
+                      onChanged: (novaFazenda) {
+                        setState(() {
+                          fazendaSelecionada = novaFazenda;
+                          plantioIdeal = 'Carregando...';
+                          descricaoAgrotoxicos = 'Carregando...';
+                          dicasCultivo = 'Carregando...';
+                          alertaClimatico = 'Carregando...';
+                          alertaTemperatura = 'Carrregando...';
+                        });
+                        _carregarInformacoesDaFazenda(novaFazenda!);
+                      },
+                      items:
+                          fazendas.map((fazenda) {
+                            return DropdownMenuItem<Map<String, dynamic>>(
+                              value: fazenda,
+                              child: Text(
+                                fazenda['nome'],
+                                style: GoogleFonts.quicksand(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                    ),
+                  ),
+
                 SizedBox(height: 20),
                 Container(
                   padding: EdgeInsets.all(10),
@@ -216,7 +261,10 @@ class _AgroScreenState extends State<AgroScreen> {
                     children: [
                       Row(
                         children: [
-                          Icon(FontAwesomeIcons.circleInfo, color: Colors.white),
+                          Icon(
+                            FontAwesomeIcons.circleInfo,
+                            color: Colors.white,
+                          ),
                           SizedBox(width: 5),
                           Text(
                             'Informações:',
@@ -263,7 +311,10 @@ class _AgroScreenState extends State<AgroScreen> {
                     children: [
                       Row(
                         children: [
-                          Icon(FontAwesomeIcons.triangleExclamation, color: Colors.white),
+                          Icon(
+                            FontAwesomeIcons.triangleExclamation,
+                            color: Colors.white,
+                          ),
                           SizedBox(width: 5),
                           Text(
                             'Alerta Climático:',

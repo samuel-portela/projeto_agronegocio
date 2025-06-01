@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class DadosController {
-  final String apiUrl = 'http://34.201.128.160:4040/preencher-dados';
+  final String apiUrl = 'http://3.82.212.170:4040/preencher-dados';
 
   Future<bool> enviarFormularioMultiplo({
     required List<Map<String, dynamic>> fazendas,

@@ -34,7 +34,7 @@ class _RecuperarContaState extends State<RecuperarConta> {
   }
 
   final telefoneMask = MaskTextInputFormatter(
-    mask: '+## (##) #####-####',
+    mask: '+55 (##) #####-####',
     filter: {"#": RegExp(r'[0-9]')},
   );
 

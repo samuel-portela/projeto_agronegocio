@@ -9,7 +9,7 @@ class LoginController {
   LoginController({required this.client});
 
   Future<bool> login(UserLogin user) async {
-    final url = Uri.parse('http://34.201.128.160:4040/login');
+    final url = Uri.parse('http://3.82.212.170:4040/login');
 
     try {
       final response = await http.post(

@@ -16,6 +16,7 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
   final _tokenController = TextEditingController();
   final _senhaController = TextEditingController();
   bool _isLoading = false;
+  bool _obscureSenha = true;
 
   @override
   void dispose() {
@@ -37,7 +38,7 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://34.201.128.160:4040/enviar-nova-senha'),
+          Uri.parse('http://3.82.212.170:4040/enviar-nova-senha'),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(body),
         );
@@ -132,16 +133,35 @@ class _NovaSenhaPageState extends State<NovaSenhaPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _senhaController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                  obscureText: _obscureSenha,
+                  decoration: InputDecoration(
                     labelText: 'Nova senha',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    helperText:
+                        'Mínimo 8 caracteres com letras, números e símbolos',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureSenha ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureSenha = !_obscureSenha;
+                        });
+                      },
+                    ),
                   ),
-                  validator:
-                      (value) =>
-                          value == null || value.length < 6
-                              ? 'Senha muito curta'
-                              : null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Digite sua senha';
+                    } else if (value.length < 8) {
+                      return 'A senha deve ter no mínimo 8 caracteres';
+                    } else if (!RegExp(
+                      r'(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])',
+                    ).hasMatch(value)) {
+                      return 'A senha deve conter letra maiúscula, minúscula, número e símbolo';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 30),
                 CustomButton(
